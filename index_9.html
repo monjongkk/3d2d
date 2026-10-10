@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>นักสำรวจโลกเรขาคณิต โดยครูจองซ่า</title>
+<style>
+:root{--blue:#3fa9ff;--purple:#9b6bff;--pink:#ff7ac6;--yellow:#ffd93d;--green:#3ddc84;--ink:#2b2a5c;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:"Sarabun","Noto Sans Thai","Leelawadee UI","Tahoma",system-ui,sans-serif;color:var(--ink);font-size:clamp(17px,2.4vw,21px);line-height:1.5;background:linear-gradient(180deg,#8fd3ff 0%,#c9b6ff 55%,#ffc2e6 100%);background-attachment:fixed}
+h1,h2,h3,h4,p{margin:0}
+button{font-family:inherit}
+.screen{display:none;min-height:100vh;position:relative}
+.screen.active{display:block}
+.wrap{max-width:1100px;margin:0 auto;padding:14px 14px 48px}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.bar h2{flex:1;min-width:180px;font-size:1.5em;color:#fff;text-shadow:0 3px 0 #6a4bd8,0 6px 10px rgba(40,30,100,.35)}
+.chip{background:#fff;border-radius:99px;padding:.3em .9em;font-weight:800;box-shadow:0 4px 0 rgba(120,90,200,.3);white-space:nowrap}
+
+/* buttons */
+.btn{font:inherit;font-weight:800;border:none;cursor:pointer;color:#fff;padding:.6em 1.2em;border-radius:22px;text-shadow:0 2px 0 rgba(0,0,0,.2);min-height:52px;
+ background:linear-gradient(180deg,var(--l,#78ccff),var(--c,#3fa9ff));box-shadow:0 7px 0 var(--d,#2a7bc4),0 14px 20px rgba(40,30,100,.25);transition:transform .08s,box-shadow .08s,filter .15s}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(5px);box-shadow:0 2px 0 var(--d,#2a7bc4),0 6px 10px rgba(40,30,100,.25)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.4)}
+.btn:disabled:active{transform:none;box-shadow:0 7px 0 var(--d,#2a7bc4),0 14px 20px rgba(40,30,100,.25)}
+.btn.sm{min-height:46px;padding:.35em .8em;font-size:.88em;border-radius:16px;box-shadow:0 5px 0 var(--d,#2a7bc4),0 9px 14px rgba(40,30,100,.2)}
+.btn.sm:active{transform:translateY(4px);box-shadow:0 1px 0 var(--d,#2a7bc4)}
+.b-blue{--l:#78ccff;--c:#3fa9ff;--d:#2a7bc4}
+.b-pink{--l:#ff9bd8;--c:#ff5fb5;--d:#c93a8a}
+.b-green{--l:#6ff0a8;--c:#27c96c;--d:#1b9650}
+.b-yellow{--l:#ffe777;--c:#ffc21a;--d:#c78f00;color:#5b3b00;text-shadow:none}
+.b-purple{--l:#b997ff;--c:#8a55f5;--d:#5f33b8}
+.b-red{--l:#ff9a9a;--c:#ff5a5f;--d:#c13136}
+.b-gray{--l:#d6dcea;--c:#a3adc0;--d:#717c92}
+
+.card{background:rgba(255,255,255,.93);border:4px solid #fff;border-radius:28px;padding:18px;box-shadow:0 10px 0 rgba(120,90,200,.25),0 18px 30px rgba(60,40,120,.2)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.center{text-align:center}
+
+/* HOME */
+#scr-home{overflow:hidden}
+.sky{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.twinkle{position:absolute;animation:tw 2.4s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.cloud{position:absolute;background:#fff;border-radius:99px;opacity:.95;animation:drift linear infinite;box-shadow:0 8px 0 rgba(150,170,230,.35)}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud::before{width:55%;height:150%;left:15%;top:-70%}
+.cloud::after{width:40%;height:120%;left:50%;top:-45%}
+@keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+.floaty{position:absolute;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 8px 6px rgba(40,30,100,.25))}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-16px) rotate(5deg)}}
+.hill{position:absolute;left:-15%;right:-15%;bottom:-170px;height:330px;border-radius:50%;background:radial-gradient(ellipse at 50% 20%,#8cf0a9,#2fc56f 70%);box-shadow:inset 0 14px 0 rgba(255,255,255,.35)}
+.hero{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:18px 14px 60px;text-align:center}
+.stage{position:relative;width:min(440px,92vw);height:min(250px,52vw);margin:0 auto}
+.stage .rb{position:absolute;inset:0}
+.stage .rb svg{width:100%;height:100%;display:block}
+.stage .mascot{position:absolute;left:50%;bottom:-10px;height:98%;transform:translateX(-50%);animation:hop 2.6s ease-in-out infinite;filter:drop-shadow(0 10px 8px rgba(40,30,100,.3))}
+@keyframes hop{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+.mascot svg{height:100%;width:auto;display:block}
+.title{font-size:clamp(2em,7.5vw,3.6em);line-height:1.15;font-weight:900;color:#fff;margin-top:14px;
+ text-shadow:0 2px 0 #ff5fb5,0 4px 0 #c93a8a,0 6px 0 #9b6bff,0 8px 0 #6a4bd8,0 14px 18px rgba(40,30,100,.45)}
+.subtitle{font-size:1.2em;font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(40,30,100,.5);margin-top:6px}
+.by{display:inline-block;margin-top:12px;background:#fff;border-radius:99px;padding:.35em 1.2em;font-weight:900;color:#8a55f5;box-shadow:0 5px 0 rgba(120,90,200,.35)}
+.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:640px;margin:22px auto 0}
+.menu .btn{font-size:1.25em;min-height:76px}
+@media(max-width:520px){.menu{grid-template-columns:1fr}}
+
+/* levels */
+.levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.lv{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.lv .em{font-size:3.4em;line-height:1}
+.lv h3{font-size:1.3em}
+.lv p{flex:1}
+@media(max-width:800px){.levels{grid-template-columns:1fr}}
+
+/* how */
+.steps{display:grid;gap:14px}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step .n{flex:none;width:52px;height:52px;border-radius:50%;background:linear-gradient(180deg,#ffe777,#ffc21a);color:#5b3b00;font-weight:900;font-size:1.5em;display:grid;place-items:center;box-shadow:0 4px 0 #c78f00}
+
+/* learn */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.chip-shape{border:4px solid #fff;background:#fff;border-radius:22px;padding:6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:104px;font-weight:800;font-size:.9em;color:var(--ink);box-shadow:0 5px 0 rgba(120,90,200,.3);transition:transform .1s}
+.chip-shape svg{width:62px;height:62px}
+.chip-shape.on{background:#efe6ff;border-color:var(--purple);transform:translateY(-3px)}
+.detail{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:20px;align-items:center}
+@media(max-width:720px){.detail{grid-template-columns:1fr}}
+.dvis{background:linear-gradient(180deg,#e6f6ff,#f3e8ff);border-radius:24px;padding:14px;box-shadow:inset 0 4px 10px rgba(80,60,160,.15)}
+.dvis svg{width:100%;height:auto;display:block;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 10px 8px rgba(40,30,100,.25))}
+.dtxt h3{font-size:1.6em;color:#6a4bd8;margin-bottom:6px}
+.dtxt h4{margin:12px 0 6px;font-size:1.05em}
+.pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.pill{background:linear-gradient(180deg,#fff7c2,#ffe27a);border-radius:18px;padding:6px 14px;text-align:center;font-weight:800;box-shadow:0 4px 0 #e0b400}
+.pill b{display:block;font-size:1.6em;line-height:1.1;color:#d4328f}
+.exs{display:flex;gap:10px;flex-wrap:wrap}
+.ex{background:#f1f8ff;border:3px solid #cfe9ff;border-radius:18px;padding:6px 12px;font-weight:700}
+.ex span{font-size:1.6em;margin-right:6px;vertical-align:middle}
+.tip{margin-top:12px;background:#e8fff1;border-radius:16px;padding:8px 12px;font-weight:700}
+.prog{font-weight:800}
+
+/* quiz */
+.statrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.pbar{height:24px;background:#fff;border-radius:99px;border:3px solid #fff;overflow:hidden;box-shadow:inset 0 3px 6px rgba(80,60,160,.25);margin-bottom:14px}
+.pbar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#ffd93d,#ff7ac6,#9b6bff);transition:width .4s}
+.qvis{width:min(250px,60vw);margin:0 auto 6px;aspect-ratio:1;display:grid;place-items:center;background:linear-gradient(180deg,#e6f6ff,#f3e8ff);border-radius:30px;box-shadow:inset 0 4px 10px rgba(80,60,160,.15)}
+.qvis svg{width:86%;height:86%;filter:drop-shadow(0 8px 6px rgba(40,30,100,.25))}
+.bigemoji{font-size:clamp(90px,20vw,150px);line-height:1;filter:drop-shadow(0 8px 6px rgba(40,30,100,.25))}
+.qtext{font-size:1.45em;font-weight:900;text-align:center;margin:10px 0 14px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.opts{grid-template-columns:1fr}}
+.opt{font:inherit;font-weight:800;font-size:1.05em;text-align:left;padding:.7em 1em;min-height:62px;border-radius:20px;border:4px solid #d9ccff;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 5px 0 #cdbff5;transition:transform .08s,background .15s}
+.opt:hover:not(:disabled){background:#f4eeff;transform:translateY(-2px)}
+.opt:disabled{cursor:default}
+.opt.good{background:#d8ffe8;border-color:#27c96c;box-shadow:0 5px 0 #1b9650}
+.opt.bad{background:#ffe0e0;border-color:#ff5a5f;box-shadow:0 5px 0 #c13136}
+.fb{margin-top:14px;border-radius:20px;padding:12px 16px;font-weight:700;display:none}
+.fb.show{display:block;animation:pop .3s}
+.fb.ok{background:#d8ffe8;border:3px solid #27c96c}
+.fb.no{background:#fff0d6;border:3px solid #ffb02e}
+.fb b{font-size:1.2em;display:block}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.fx{position:fixed;pointer-events:none;font-size:30px;z-index:999;line-height:1}
+
+/* result */
+.bigstars{font-size:clamp(50px,13vw,92px);letter-spacing:6px;filter:drop-shadow(0 6px 4px rgba(0,0,0,.2))}
+.bigstars .off{filter:grayscale(1);opacity:.35}
+.res-score{font-size:2.4em;font-weight:900;color:#d4328f}
+.medalbig{font-size:5em;line-height:1;margin:6px 0}
+.msg{font-size:1.25em;font-weight:800;margin:8px 0 16px}
+
+/* score */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:linear-gradient(180deg,#fff,#f0e9ff);border-radius:20px;padding:12px;text-align:center;font-weight:800;box-shadow:0 5px 0 rgba(120,90,200,.25)}
+.stat b{display:block;font-size:1.9em;color:#d4328f}
+.medals{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.medal{border-radius:20px;padding:12px;text-align:center;background:linear-gradient(180deg,#fff9d6,#ffe98a);box-shadow:0 5px 0 #e0b400;font-weight:700}
+.medal .i{font-size:2.6em;line-height:1.1}
+.medal.lock{filter:grayscale(1);opacity:.5}
+.medal small{display:block;font-weight:600}
+
+/* build */
+.bgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+@media(max-width:940px){.bgrid{grid-template-columns:1fr}}
+.pal{display:flex;gap:8px;flex-wrap:wrap}
+.pbtn{border:4px solid #fff;background:#fff;border-radius:18px;padding:4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-weight:800;font-size:.72em;color:var(--ink);min-width:78px;box-shadow:0 4px 0 rgba(120,90,200,.3)}
+.pbtn svg{width:46px;height:46px}
+.pbtn.on{background:#efe6ff;border-color:var(--purple);transform:translateY(-3px)}
+.hint{margin:8px 0;font-weight:700;color:#6a4bd8}
+#board{width:100%;height:auto;display:block;border-radius:22px;touch-action:none;user-select:none;-webkit-user-select:none;border:5px solid #fff;box-shadow:0 8px 0 rgba(120,90,200,.25),0 16px 26px rgba(60,40,120,.2);cursor:crosshair;background:#bde6ff}
+#board.armed{cursor:copy}
+.sub{font-weight:900;margin:2px 0 8px;color:#6a4bd8}
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.swatches{display:flex;gap:7px;flex-wrap:wrap;margin:6px 0 12px}
+.sw{width:40px;height:40px;border-radius:50%;border:4px solid #fff;box-shadow:0 3px 6px rgba(0,0,0,.3);cursor:pointer;padding:0}
+.sw.on{outline:4px solid var(--purple);outline-offset:1px}
+.mchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.mchip{border:3px solid #fff;background:#fff;border-radius:16px;padding:4px 10px;font-weight:800;cursor:pointer;color:var(--ink);box-shadow:0 3px 0 rgba(120,90,200,.3);font-size:.85em;min-height:42px}
+.mchip.on{background:#efe6ff;border-color:var(--purple)}
+.mchip.done::after{content:" ✅"}
+.checks{list-style:none;padding:0;margin:8px 0}
+.checks li{padding:3px 0;font-weight:700}
+.praise{display:none;margin-top:10px;background:linear-gradient(180deg,#fff7c2,#ffe27a);border-radius:18px;padding:10px 14px;font-weight:800}
+.praise.show{display:block;animation:pop .3s}
+.exrow{margin-top:10px}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(30px);background:#2b2a5c;color:#fff;padding:.7em 1.3em;border-radius:99px;font-weight:800;z-index:1000;opacity:0;pointer-events:none;transition:all .3s;max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== ปรับความสวยงามเพิ่มเติม ===== */
+body{background:radial-gradient(circle at 12% 8%,rgba(255,255,255,.6),transparent 34%),radial-gradient(circle at 88% 18%,rgba(255,238,140,.5),transparent 30%),radial-gradient(circle at 72% 92%,rgba(255,150,220,.4),transparent 42%),linear-gradient(180deg,#7fd0ff 0%,#b9a8ff 55%,#ffb8e2 100%);background-attachment:fixed}
+#bgdeco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#bgdeco .d{position:absolute;opacity:.24;animation:bob 7s ease-in-out infinite}
+body.on-home #bgdeco{display:none}
+.screen{z-index:1}
+.screen.active .wrap{animation:rise .4s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.btn{background:linear-gradient(180deg,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 52%),linear-gradient(180deg,var(--l,#78ccff),var(--c,#3fa9ff));border:3px solid rgba(255,255,255,.6)}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(246,240,255,.94));box-shadow:0 10px 0 rgba(120,90,200,.22),0 26px 44px rgba(60,40,120,.26),inset 0 2px 0 #fff}
+.chip{background:linear-gradient(180deg,#fff,#f1e8ff);border:3px solid #fff}
+.bar h2::before{content:"⭐ "}
+.dvis,.qvis{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 38%,#fff 0,#e9f7ff 45%,#ddd0ff 100%);box-shadow:inset 0 4px 14px rgba(80,60,160,.18)}
+.dvis::before,.qvis::before{content:"✨";position:absolute;right:12px;top:8px;font-size:26px;animation:tw 2.4s ease-in-out infinite}
+.dvis::after,.qvis::after{content:"⭐";position:absolute;left:12px;bottom:10px;font-size:20px;animation:tw 3s ease-in-out infinite}
+.dvis svg{animation:none;filter:drop-shadow(0 8px 6px rgba(40,30,100,.2))}
+.qvis svg{filter:drop-shadow(0 8px 6px rgba(40,30,100,.2))}
+.bobg{animation:bobg 3.2s ease-in-out infinite}
+@keyframes bobg{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.chip-shape svg{width:72px;height:72px}
+.chip-shape.on{background:linear-gradient(180deg,#f6f0ff,#e3d3ff)}
+.hill{background:repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 2px,transparent 2px 40px),repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 2px,transparent 2px 40px),radial-gradient(ellipse at 50% 20%,#8cf0a9,#2fc56f 70%)}
+.hill2{position:absolute;left:-22%;right:-4%;bottom:-140px;height:300px;border-radius:50%;background:radial-gradient(ellipse at 40% 20%,#c4f7d3,#5ddb92 70%)}
+.trees{position:absolute;inset:0;pointer-events:none;z-index:1}
+.trees .t{position:absolute}
+.trees svg{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 4px rgba(20,60,40,.3))}
+.sun{position:absolute;right:5%;top:3%;width:min(120px,24vw)}
+.sun svg{width:100%;height:auto;display:block;filter:drop-shadow(0 0 18px rgba(255,220,80,.9))}
+.sun .rays{transform-origin:100px 100px;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stage::before{content:"";position:absolute;left:50%;bottom:-6px;width:56%;height:20px;border-radius:50%;background:rgba(43,42,92,.28);transform:translateX(-50%);filter:blur(4px)}
+.title{background:none}
+
+/* ===== รอบที่ 2 ===== */
+.bar h2{-webkit-text-stroke:1.5px #6a4bd8;paint-order:stroke fill;text-shadow:0 3px 0 #5f33b8,0 8px 12px rgba(40,30,100,.4)}
+.title{-webkit-text-stroke:2px #8a55f5;paint-order:stroke fill;font-size:clamp(2.1em,8vw,3.9em)}
+.title .hl{display:block;color:#ffe14d;-webkit-text-stroke:2px #e0861a;text-shadow:0 3px 0 #e0861a,0 6px 0 #c4650c,0 10px 0 #9b4a08,0 18px 22px rgba(40,30,100,.5)}
+.by{background:linear-gradient(180deg,#ff9bd8,#ff5fb5);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25);border-radius:14px;padding:.4em 1.7em;box-shadow:0 5px 0 #c93a8a,0 12px 18px rgba(60,20,80,.3);border:3px solid rgba(255,255,255,.7);font-size:1.05em}
+.menu .btn{display:flex;align-items:center;justify-content:center;gap:.4em}
+.ic{display:inline-grid;place-items:center;width:1.75em;height:1.75em;border-radius:50%;background:rgba(255,255,255,.92);font-size:.95em;text-shadow:none;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12),0 3px 6px rgba(0,0,0,.22)}
+.wave{transform-origin:140px 152px;animation:wave 2.2s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
+.opt{display:flex;align-items:center;gap:12px;background:linear-gradient(180deg,#fff,#f6f1ff)}
+.opt .lt{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;background:linear-gradient(180deg,#c3a6ff,#8a55f5);box-shadow:0 3px 0 #5f33b8,inset 0 2px 0 rgba(255,255,255,.5)}
+.opt:nth-child(2) .lt{background:linear-gradient(180deg,#ffa8dd,#ff5fb5);box-shadow:0 3px 0 #c93a8a,inset 0 2px 0 rgba(255,255,255,.5)}
+.opt:nth-child(3) .lt{background:linear-gradient(180deg,#7bf3b2,#27c96c);box-shadow:0 3px 0 #1b9650,inset 0 2px 0 rgba(255,255,255,.5)}
+.opt:nth-child(4) .lt{background:linear-gradient(180deg,#8ad2ff,#3fa9ff);box-shadow:0 3px 0 #2a7bc4,inset 0 2px 0 rgba(255,255,255,.5)}
+.opt.good{animation:pop .45s}
+.opt.bad{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.pbar i{background:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 10px,transparent 10px 20px),linear-gradient(90deg,#ffd93d,#ff7ac6,#9b6bff);background-size:40px 40px,100% 100%;animation:stripe 1.2s linear infinite}
+@keyframes stripe{to{background-position:40px 0,0 0}}
+.detail>*{animation:pop .35s}
+.medalbig{filter:drop-shadow(0 0 18px rgba(255,205,60,.95));animation:hop2 1.8s ease-in-out infinite}
+@keyframes hop2{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(1.08)}}
+.pbtn{background:linear-gradient(180deg,#fff,#f4eeff)}
+.pill{background:linear-gradient(180deg,#fffbd6,#ffe27a);border:3px solid #fff}
+</style>
+</head>
+<body class="on-home">
+<noscript><p style="padding:20px;font-size:24px">กรุณาเปิดการใช้งาน JavaScript เพื่อเล่นเกมนี้</p></noscript>
+
+<!-- ============ หน้าแรก ============ -->
+<section id="scr-home" class="screen active">
+  <div class="sky" id="sky"></div>
+  <div class="hill"></div>
+  <div class="hero">
+    <div class="stage">
+      <div class="rb" id="rainbow"></div>
+      <div class="mascot" id="mascot"></div>
+    </div>
+    <h1 class="title">นักสำรวจโลก<span class="hl">เรขาคณิต</span></h1>
+    <p class="subtitle">เกมสนุก เรียนรู้รูปเรขาคณิตสองมิติและสามมิติ</p>
+    <div class="by">✨ จัดทำโดย ครูจองซ่า ✨</div>
+    <div class="menu">
+      <button class="btn b-green" data-go="levels"><span class="ic">🚀</span>เริ่มเล่นเกม</button>
+      <button class="btn b-blue" data-go="learn"><span class="ic">📘</span>เรียนรู้รูปทรง</button>
+      <button class="btn b-purple" data-go="how"><span class="ic">❓</span>วิธีเล่น</button>
+      <button class="btn b-pink" data-go="score"><span class="ic">🏆</span>ดูคะแนน</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ เลือกด่าน ============ -->
+<section id="scr-levels" class="screen">
+  <div class="wrap">
+    <div class="bar"><button class="btn sm b-yellow" data-go="home">🏠 หน้าแรก</button><h2>เลือกด่านผจญภัย</h2><div class="chip">⭐ <span class="totalScore">0</span></div></div>
+    <div class="levels">
+      <div class="card lv"><div class="em">📘</div><h3>ด่านที่ 1 เรียนรู้รูปทรง</h3><p>ทำความรู้จักรูปสองมิติ 5 รูป และรูปสามมิติ 6 รูป พร้อมตัวอย่างสิ่งของรอบตัว</p><button class="btn b-blue" data-go="learn">เข้าเรียนรู้</button></div>
+      <div class="card lv"><div class="em">🔍</div><h3>ด่านที่ 2 ทายรูปทรงปริศนา</h3><p>ตอบคำถามปรนัย 20 ข้อ สุ่มใหม่ทุกครั้ง สะสมดาวและเหรียญนักสำรวจ</p><button class="btn b-pink" data-go="quiz">เริ่มทายปริศนา</button></div>
+      <div class="card lv"><div class="em">🏗️</div><h3>ด่านที่ 3 สร้างสิ่งของ</h3><p>นำรูปเรขาคณิตมาประกอบเป็นบ้าน หุ่นยนต์ รถ จรวด ปราสาท หรือผลงานในจินตนาการ</p><button class="btn b-green" data-go="build">เริ่มสร้างสรรค์</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ วิธีเล่น ============ -->
+<section id="scr-how" class="screen">
+  <div class="wrap">
+    <div class="bar"><button class="btn sm b-yellow" data-go="home">🏠 หน้าแรก</button><h2>วิธีเล่นเกม</h2></div>
+    <div class="steps">
+      <div class="card step"><div class="n">1</div><div><h3>📘 เรียนรู้รูปทรง</h3><p>เลือกหมวด “สองมิติ” หรือ “สามมิติ” แล้วแตะรูปทรงที่อยากรู้จัก จะเห็นลักษณะ จำนวนด้าน มุม หน้า ขอบ จุดยอด และตัวอย่างสิ่งของจริง</p></div></div>
+      <div class="card step"><div class="n">2</div><div><h3>🔍 ทายรูปทรงปริศนา</h3><p>อ่านคำถามและดูภาพ แล้วเลือกคำตอบที่ถูกจาก 4 ตัวเลือก ตอบถูกได้ 10 คะแนนและดาวระยิบระยับ ตอบผิดไม่เป็นไร เรามีคำอธิบายให้ แล้วกด “ข้อต่อไป”</p></div></div>
+      <div class="card step"><div class="n">3</div><div><h3>🏗️ สร้างสิ่งของจากรูปทรง</h3><p>แตะรูปทรงในแถบเลือก แล้วแตะบนกระดานเพื่อวาง จากนั้นลากเพื่อย้าย เลือกสี หมุน ย่อ-ขยาย หรือลบได้ เลือกภารกิจแล้วสร้างให้ครบ จะได้คะแนนโบนัสและข้อความชื่นชม</p></div></div>
+      <div class="card step"><div class="n">4</div><div><h3>🏆 สะสมรางวัล</h3><p>คะแนนรวม ดาว 1–3 ดวง และเหรียญนักสำรวจ จะถูกบันทึกไว้ในเครื่องของคุณ ดูได้ที่ปุ่ม “ดูคะแนน”</p></div></div>
+    </div>
+    <div class="center" style="margin-top:20px"><button class="btn b-green" data-go="levels">🚀 เริ่มเล่นเลย</button></div>
+  </div>
+</section>
+
+<!-- ============ เรียนรู้ ============ -->
+<section id="scr-learn" class="screen">
+  <div class="wrap">
+    <div class="bar"><button class="btn sm b-yellow" data-go="home">🏠 หน้าแรก</button><h2>เรียนรู้รูปทรง</h2><div class="chip prog">🧭 ดูแล้ว <span id="learnProg">0</span>/11</div></div>
+    <div class="tabs">
+      <button class="btn b-blue" id="tab2" data-dim="2">⬛ รูปสองมิติ</button>
+      <button class="btn b-purple" id="tab3" data-dim="3">🧊 รูปสามมิติ</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="card detail" id="detail"></div>
+    <div class="row" style="margin-top:18px;justify-content:center">
+      <button class="btn b-pink" data-go="quiz">🔍 ไปทายรูปทรงปริศนา</button>
+      <button class="btn b-green" data-go="build">🏗️ ไปสร้างสิ่งของ</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ทายรูปทรง ============ -->
+<section id="scr-quiz" class="screen">
+  <div class="wrap">
+    <div class="bar"><button class="btn sm b-yellow" data-go="home">🏠 หน้าแรก</button><h2>ทายรูปทรงปริศนา</h2><button class="btn sm b-purple" id="qRestart">🔄 เล่นใหม่</button></div>
+    <div class="statrow">
+      <div class="chip" id="qNum">ข้อ 1 / 20</div>
+      <div class="chip">✅ ตอบถูก <span id="qRight">0</span> ข้อ</div>
+      <div class="chip">⭐ คะแนน <span id="qScore">0</span></div>
+    </div>
+    <div class="pbar"><i id="qBar"></i></div>
+    <div class="card">
+      <div class="qvis" id="qVisual"></div>
+      <div class="qtext" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="fb" id="qFb"></div>
+      <div class="center" style="margin-top:16px"><button class="btn b-green" id="qNext" style="display:none">ข้อต่อไป ➡️</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ สรุปผล ============ -->
+<section id="scr-result" class="screen">
+  <div class="wrap">
+    <div class="card center">
+      <h2 style="font-size:1.8em;color:#6a4bd8">🎊 สรุปผลการสำรวจ 🎊</h2>
+      <div class="bigstars" id="rStars"></div>
+      <div class="res-score"><span id="rScore">0</span> คะแนน</div>
+      <p style="font-weight:800">ตอบถูก <span id="rRight">0</span> จาก 20 ข้อ</p>
+      <div class="medalbig" id="rMedal"></div>
+      <p style="font-weight:800" id="rMedalName"></p>
+      <p class="msg" id="rMsg"></p>
+      <div class="row" style="justify-content:center">
+        <button class="btn b-green" id="rAgain">🔄 เล่นอีกครั้ง</button>
+        <button class="btn b-blue" data-go="build">🏗️ ไปสร้างสิ่งของ</button>
+        <button class="btn b-pink" data-go="score">🏆 ดูคะแนนรวม</button>
+        <button class="btn b-yellow" data-go="home">🏠 หน้าแรก</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ คะแนน ============ -->
+<section id="scr-score" class="screen">
+  <div class="wrap">
+    <div class="bar"><button class="btn sm b-yellow" data-go="home">🏠 หน้าแรก</button><h2>คะแนนและรางวัล</h2></div>
+    <div class="card">
+      <div class="stats" id="stats"></div>
+      <h3 style="margin:6px 0 10px">🎖️ เหรียญนักสำรวจ</h3>
+      <div class="medals" id="medals"></div>
+      <div class="row" style="margin-top:18px;justify-content:center">
+        <button class="btn b-green" data-go="levels">🚀 เล่นเพื่อสะสมเพิ่ม</button>
+        <button class="btn b-red sm" id="resetAll">🗑️ ล้างคะแนนทั้งหมด</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ สร้างสิ่งของ ============ -->
+<section id="scr-build" class="screen">
+  <div class="wrap">
+    <div class="bar"><button class="btn sm b-yellow" data-go="home">🏠 หน้าแรก</button><h2>สร้างสิ่งของจากรูปทรง</h2><div class="chip">⭐ <span class="totalScore">0</span></div></div>
+    <div class="bgrid">
+      <div>
+        <div class="card" style="padding:12px">
+          <div class="sub">1) เลือกชิ้นส่วน แล้วแตะบนกระดานเพื่อวาง</div>
+          <div class="pal" id="pal"></div>
+          <div class="hint" id="bHint">👆 แตะรูปทรงด้านบนก่อน</div>
+          <svg id="board" viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset="1" stop-color="#e5f6ff"/></linearGradient>
+              <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fe39a"/><stop offset="1" stop-color="#2fb866"/></linearGradient>
+            </defs>
+            <rect width="800" height="520" fill="url(#sky)"/><defs><pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1.8" fill="#fff" fill-opacity=".6"/></pattern></defs><rect width="800" height="468" fill="url(#dots)"/>
+            <circle cx="86" cy="78" r="74" fill="#fff6a8" opacity=".35"/><circle cx="86" cy="78" r="46" fill="#ffe55c"/><circle cx="86" cy="78" r="46" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="4"/>
+            <g fill="#fff" opacity=".95"><ellipse cx="300" cy="70" rx="62" ry="20"/><ellipse cx="338" cy="54" rx="40" ry="22"/><ellipse cx="560" cy="120" rx="70" ry="22"/><ellipse cx="604" cy="102" rx="42" ry="22"/><ellipse cx="720" cy="46" rx="48" ry="16"/></g>
+            <path d="M0,420 Q150,350 300,410 T600,400 T800,390 L800,520 L0,520Z" fill="#a6ecbf"/>
+            <path d="M0,448 Q200,396 400,442 T800,436 L800,520 L0,520Z" fill="#7be8a5"/>
+            <rect y="468" width="800" height="52" fill="url(#grass)"/>
+            <g stroke="#fff" stroke-opacity=".2" stroke-width="3"><line x1="0" y1="490" x2="800" y2="490"/><line x1="0" y1="512" x2="800" y2="512"/></g>
+            <g><circle cx="40" cy="496" r="5" fill="#ff7ac6"/><circle cx="130" cy="508" r="5" fill="#ffd93d"/><circle cx="250" cy="494" r="5" fill="#fff"/><circle cx="520" cy="506" r="5" fill="#ff7ac6"/><circle cx="640" cy="494" r="5" fill="#ffd93d"/><circle cx="760" cy="508" r="5" fill="#fff"/></g>
+            <g id="layer"></g>
+          </svg>
+          <div class="row exrow"><b>🖼️ ตัวอย่างผลงาน:</b>
+            <button class="btn sm b-blue" data-tpl="house">🏠 บ้าน</button>
+            <button class="btn sm b-blue" data-tpl="robot">🤖 หุ่นยนต์</button>
+            <button class="btn sm b-blue" data-tpl="car">🚗 รถ</button>
+            <button class="btn sm b-blue" data-tpl="rocket">🚀 จรวด</button>
+            <button class="btn sm b-blue" data-tpl="castle">🏰 ปราสาท</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="padding:12px;margin-bottom:14px">
+          <div class="sub">2) เครื่องมือแต่งรูปทรง</div>
+          <div class="swatches" id="swatches"></div>
+          <div class="tools">
+            <button class="btn sm b-purple" data-act="rotL">↺ หมุนซ้าย</button>
+            <button class="btn sm b-purple" data-act="rotR">↻ หมุนขวา</button>
+            <button class="btn sm b-blue" data-act="smaller">➖ ย่อ</button>
+            <button class="btn sm b-blue" data-act="bigger">➕ ขยาย</button>
+            <button class="btn sm b-green" data-act="front">⬆️ ไปข้างหน้า</button>
+            <button class="btn sm b-green" data-act="back">⬇️ ไปข้างหลัง</button>
+            <button class="btn sm b-yellow" data-act="dup">📑 ทำซ้ำ</button>
+            <button class="btn sm b-red" data-act="del">🗑️ ลบชิ้นนี้</button>
+            <button class="btn sm b-gray" data-act="clear">🧹 ล้างกระดาน</button>
+            <button class="btn sm b-gray" data-act="reset">🔁 เริ่มใหม่</button>
+          </div>
+          <button class="btn b-pink" style="width:100%;margin-top:12px" data-act="png">💾 บันทึกเป็นไฟล์ PNG</button>
+        </div>
+        <div class="card" style="padding:12px">
+          <div class="sub">3) ภารกิจ</div>
+          <div class="mchips" id="mchips"></div>
+          <p style="font-weight:800" id="mGoal"></p>
+          <ul class="checks" id="mChecks"></ul>
+          <button class="btn b-green" style="width:100%" data-act="check">✅ ตรวจภารกิจ</button>
+          <div class="praise" id="mPraise"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+
+/* ================== ข้อมูลรูปทรง ================== */
+var SHAPES=[
+ {id:'circle',dim:2,name:'วงกลม',color:'#ff7ac6',
+  desc:'วงกลมเป็นรูปกลมเรียบ ขอบเป็นเส้นโค้งปิด ไม่มีมุม และทุกจุดบนขอบอยู่ห่างจากจุดศูนย์กลางเท่ากัน',
+  counts:[['ด้านตรง','0'],['มุม','0'],['เส้นโค้งปิด','1']],
+  ex:[['⏰','หน้าปัดนาฬิกา'],['🪙','เหรียญ'],['🍪','คุกกี้'],['🛞','ล้อรถ']],tip:'ลองหาวงกลมในห้องเรียนดูนะ'},
+ {id:'triangle',dim:2,name:'สามเหลี่ยม',color:'#ffc21a',
+  desc:'สามเหลี่ยมมี 3 ด้านเป็นเส้นตรง และมี 3 มุม ปลายด้านทั้งสามมาต่อกันเป็นรูปปิด',
+  counts:[['ด้าน','3'],['มุม','3']],
+  ex:[['🍕','พิซซ่าหนึ่งชิ้น'],['🚩','ธงสามเหลี่ยม'],['🎄','ต้นสน'],['🔺','ป้ายเตือน']],tip:'สามเหลี่ยมใช้ทำหลังคาบ้านและจรวดได้'},
+ {id:'square',dim:2,name:'สี่เหลี่ยมจัตุรัส',color:'#3fa9ff',
+  desc:'สี่เหลี่ยมจัตุรัสมี 4 ด้านยาวเท่ากันทุกด้าน และมี 4 มุมเป็นมุมฉากทั้งหมด',
+  counts:[['ด้าน','4'],['มุม','4'],['มุมฉาก','4']],
+  ex:[['🪟','บานหน้าต่าง'],['🧽','ฟองน้ำ'],['🖼️','กรอบรูป'],['🧇','ขนมวาฟเฟิล']],tip:'ด้านทั้ง 4 ยาวเท่ากันเสมอ'},
+ {id:'rectangle',dim:2,name:'สี่เหลี่ยมผืนผ้า',color:'#3ddc84',
+  desc:'สี่เหลี่ยมผืนผ้ามี 4 ด้าน ด้านตรงข้ามยาวเท่ากัน และมี 4 มุมเป็นมุมฉาก',
+  counts:[['ด้าน','4'],['มุม','4'],['มุมฉาก','4']],
+  ex:[['📺','โทรทัศน์'],['🚪','ประตู'],['📖','หนังสือ'],['📱','โทรศัพท์']],tip:'ด้านยาวคู่หนึ่ง ด้านสั้นอีกคู่หนึ่ง'},
+ {id:'ellipse',dim:2,name:'วงรี',color:'#9b6bff',
+  desc:'วงรีเหมือนวงกลมที่ถูกบีบให้แบน ขอบเป็นเส้นโค้งปิด ไม่มีมุม มีแกนยาวและแกนสั้น',
+  counts:[['ด้านตรง','0'],['มุม','0'],['เส้นโค้งปิด','1']],
+  ex:[['🥚','ไข่ไก่'],['🏉','ลูกรักบี้'],['🍋','มะนาว']],tip:'วงรีไม่กลมเท่าวงกลม จึงดูเป็นรูปไข่'},
+ {id:'sphere',dim:3,name:'ทรงกลม',color:'#ff7ac6',
+  desc:'ทรงกลมเป็นรูปทรงกลมทุกด้าน กลิ้งได้ดี มีพื้นผิวโค้งเพียงหนึ่งผิว ไม่มีขอบและไม่มีจุดยอด',
+  counts:[['หน้าแบน','0'],['พื้นผิวโค้ง','1'],['ขอบ','0'],['จุดยอด','0']],
+  ex:[['⚽','ลูกฟุตบอล'],['🏀','ลูกบาสเกตบอล'],['🌍','ลูกโลก'],['🍊','ผลส้ม']],tip:'ทรงกลมกลิ้งได้ทุกทิศทาง'},
+ {id:'cube',dim:3,name:'ลูกบาศก์',color:'#ffc21a',
+  desc:'ลูกบาศก์มีหน้าเป็นรูปสี่เหลี่ยมจัตุรัสขนาดเท่ากันทุกหน้า ขอบทุกเส้นยาวเท่ากัน',
+  counts:[['หน้า','6'],['ขอบ','12'],['จุดยอด','8']],
+  ex:[['🎲','ลูกเต๋า'],['🧊','น้ำแข็งก้อน'],['🎁','กล่องของขวัญ']],tip:'ลูกเต๋ามี 6 หน้า ตรงกับลูกบาศก์'},
+ {id:'cuboid',dim:3,name:'ทรงสี่เหลี่ยมมุมฉาก',color:'#3ddc84',
+  desc:'ทรงสี่เหลี่ยมมุมฉากมีหน้าเป็นสี่เหลี่ยมผืนผ้า หน้าตรงข้ามเท่ากันทุกคู่ เหมือนกล่องที่ยาวหรือสูง',
+  counts:[['หน้า','6'],['ขอบ','12'],['จุดยอด','8']],
+  ex:[['📦','กล่องพัสดุ'],['🧱','ก้อนอิฐ'],['🥛','กล่องนม']],tip:'จำนวนหน้า ขอบ จุดยอด เท่ากับลูกบาศก์'},
+ {id:'cylinder',dim:3,name:'ทรงกระบอก',color:'#3fa9ff',
+  desc:'ทรงกระบอกมีฐานบนและฐานล่างเป็นวงกลม 2 หน้า และมีพื้นผิวโค้งอยู่ด้านข้าง ไม่มีจุดยอด',
+  counts:[['หน้าแบน','2'],['พื้นผิวโค้ง','1'],['ขอบโค้ง','2'],['จุดยอด','0']],
+  ex:[['🥫','กระป๋อง'],['🛢️','ถังน้ำมัน'],['🔋','ถ่านไฟฉาย'],['🪵','ท่อนไม้']],tip:'ทรงกระบอกตั้งได้และกลิ้งได้'},
+ {id:'cone',dim:3,name:'ทรงกรวย',color:'#ff9f43',
+  desc:'ทรงกรวยมีฐานเป็นวงกลม 1 หน้า มีพื้นผิวโค้งที่เรียวขึ้นไปบรรจบกันที่จุดยอดด้านบน',
+  counts:[['หน้าแบน','1'],['พื้นผิวโค้ง','1'],['ขอบโค้ง','1'],['จุดยอด','1']],
+  ex:[['🍦','ไอศกรีมโคน'],['🥕','แครอท'],['🎉','หมวกปาร์ตี้']],tip:'ปลายแหลมของกรวยคือจุดยอด'},
+ {id:'prism',dim:3,name:'ปริซึมสามเหลี่ยม',color:'#9b6bff',
+  desc:'ปริซึมสามเหลี่ยมมีฐาน 2 หน้าเป็นรูปสามเหลี่ยม และมีหน้าข้างเป็นรูปสี่เหลี่ยมผืนผ้า 3 หน้า',
+  counts:[['หน้า','5'],['ขอบ','9'],['จุดยอด','6']],
+  ex:[['⛺','เต็นท์'],['🧀','ชีสชิ้นสามเหลี่ยม'],['🏠','หลังคาบ้านทรงจั่ว']],tip:'ฐานเป็นสามเหลี่ยม 2 หน้า ด้านข้างเป็นสี่เหลี่ยม 3 หน้า'}
+];
+var SC={};SHAPES.forEach(function(s){SC[s.id]=s.color;});
+var SMAP={};SHAPES.forEach(function(s){SMAP[s.id]=s;});
+
+/* ================== วาดรูปทรงด้วย SVG ================== */
+var UID=0;
+function hex2rgb(h){h=h.replace('#','');if(h.length===3){h=h.split('').map(function(c){return c+c;}).join('');}var n=parseInt(h,16);return [(n>>16)&255,(n>>8)&255,n&255];}
+function mix(a,b,t){var A=hex2rgb(a),B=hex2rgb(b);return '#'+A.map(function(v,i){return Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0');}).join('');}
+function shapeInner(t,c){
+  var id='g'+(++UID);
+  var L=mix(c,'#ffffff',.6),L2=mix(c,'#ffffff',.32),D=mix(c,'#000000',.2),DD=mix(c,'#000000',.38),K=mix(c,'#000000',.45);
+  function stop(o,col,op){return '<stop offset="'+o+'" stop-color="'+col+'"'+(op!==undefined?' stop-opacity="'+op+'"':'')+'/>';}
+  function lin(i,x1,y1,x2,y2,stops){return '<linearGradient id="'+i+'" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'">'+stops+'</linearGradient>';}
+  var f='fill="url(#'+id+')"',ft='fill="url(#'+id+'t)"',fs='fill="url(#'+id+'s)"',fg='fill="url(#'+id+'gl)"',fb='fill="url(#'+id+'b)"';
+  var gloss=lin(id+'gl',0,0,0,1,stop(0,'#fff',.62)+stop(1,'#fff',0));
+  var glow='<radialGradient id="'+id+'b" cx=".5" cy="1" r=".7">'+stop(0,'#fff',.4)+stop(1,'#fff',0)+'</radialGradient>';
+  var ball='<radialGradient id="'+id+'" cx=".35" cy=".3" r=".85">'+stop(0,L)+stop(.4,c)+stop(.85,D)+stop(1,DD)+'</radialGradient>';
+  var diag=lin(id,0,0,1,1,stop(0,L)+stop(.5,c)+stop(1,D));
+  var horiz=lin(id,0,0,1,0,stop(0,D)+stop(.28,L)+stop(.62,c)+stop(1,DD));
+  var topL=lin(id+'t',0,0,1,1,stop(0,L)+stop(1,L2));
+  var sideD=lin(id+'s',0,0,0,1,stop(0,D)+stop(1,DD));
+  var st='stroke="'+K+'" stroke-width="4.5" stroke-linejoin="round"';
+  var rim='fill="none" stroke="#fff" stroke-opacity=".42" stroke-width="3" stroke-linejoin="round"';
+  var edge='stroke="#fff" stroke-opacity=".75" stroke-width="2.5" stroke-linecap="round"';
+  switch(t){
+    case 'circle':return '<defs>'+ball+glow+'</defs><circle cx="100" cy="100" r="80" '+f+' '+st+'/><circle cx="100" cy="100" r="78" '+fb+'/><circle cx="100" cy="100" r="70" '+rim+'/><ellipse cx="68" cy="62" rx="26" ry="12" fill="#fff" opacity=".55" transform="rotate(-35 68 62)"/><circle cx="50" cy="86" r="4" fill="#fff" opacity=".6"/>';
+    case 'triangle':return '<defs>'+diag+gloss+'</defs><polygon points="100,20 185,170 15,170" '+f+' '+st+'/><polygon points="100,46 166,160 34,160" '+rim+'/><polygon points="100,28 62,98 138,98" '+fg+'/><circle cx="62" cy="136" r="4" fill="#fff" opacity=".6"/>';
+    case 'square':return '<defs>'+diag+gloss+'</defs><rect x="25" y="25" width="150" height="150" rx="14" '+f+' '+st+'/><rect x="34" y="34" width="132" height="132" rx="9" '+rim+'/><rect x="29" y="29" width="142" height="64" rx="11" '+fg+'/><circle cx="46" cy="148" r="4" fill="#fff" opacity=".6"/>';
+    case 'rectangle':return '<defs>'+diag+gloss+'</defs><rect x="10" y="50" width="180" height="100" rx="14" '+f+' '+st+'/><rect x="19" y="59" width="162" height="82" rx="9" '+rim+'/><rect x="14" y="54" width="172" height="42" rx="11" '+fg+'/><circle cx="30" cy="130" r="4" fill="#fff" opacity=".6"/>';
+    case 'ellipse':return '<defs>'+ball+glow+gloss+'</defs><ellipse cx="100" cy="100" rx="90" ry="55" '+f+' '+st+'/><ellipse cx="100" cy="100" rx="88" ry="53" '+fb+'/><ellipse cx="100" cy="100" rx="80" ry="46" '+rim+'/><ellipse cx="66" cy="78" rx="28" ry="9" fill="#fff" opacity=".55" transform="rotate(-18 66 78)"/>';
+    case 'sphere':return '<defs>'+ball+glow+'</defs><circle cx="100" cy="100" r="80" '+f+' '+st+'/><circle cx="100" cy="100" r="78" '+fb+'/><ellipse cx="70" cy="62" rx="34" ry="18" fill="#fff" opacity=".25" transform="rotate(-35 70 62)"/><ellipse cx="68" cy="60" rx="20" ry="10" fill="#fff" opacity=".7" transform="rotate(-35 68 60)"/><circle cx="48" cy="88" r="4" fill="#fff" opacity=".6"/>';
+    case 'cube':return '<defs>'+diag+topL+sideD+'</defs><polygon points="30,70 130,70 170,30 70,30" '+ft+' '+st+'/><polygon points="130,70 170,30 170,130 130,170" '+fs+' '+st+'/><rect x="30" y="70" width="100" height="100" '+f+' '+st+'/><polygon points="36,76 84,76 36,124" fill="#fff" opacity=".28"/><line x1="36" y1="74" x2="126" y2="74" '+edge+'/><line x1="34" y1="78" x2="34" y2="164" '+edge+'/>';
+    case 'cuboid':return '<defs>'+diag+topL+sideD+'</defs><polygon points="15,80 125,80 175,40 65,40" '+ft+' '+st+'/><polygon points="125,80 175,40 175,130 125,170" '+fs+' '+st+'/><rect x="15" y="80" width="110" height="90" '+f+' '+st+'/><polygon points="21,86 70,86 21,132" fill="#fff" opacity=".28"/><line x1="21" y1="84" x2="119" y2="84" '+edge+'/><line x1="19" y1="88" x2="19" y2="164" '+edge+'/>';
+    case 'cylinder':return '<defs>'+horiz+'<radialGradient id="'+id+'t" cx=".4" cy=".4" r=".8">'+stop(0,L)+stop(.6,L2)+stop(1,c)+'</radialGradient></defs><path d="M30,50 L30,150 A70,20 0 0 0 170,150 L170,50 Z" '+f+' '+st+'/><ellipse cx="100" cy="50" rx="70" ry="20" '+ft+' '+st+'/><ellipse cx="100" cy="50" rx="58" ry="13" '+rim+'/><ellipse cx="82" cy="45" rx="26" ry="5" fill="#fff" opacity=".5"/><rect x="42" y="68" width="11" height="68" rx="5.5" fill="#fff" opacity=".34"/>';
+    case 'cone':return '<defs>'+horiz+'</defs><path d="M100,15 L170,155 A70,22 0 0 1 30,155 Z" '+f+' '+st+'/><path d="M97,34 L66,134 L79,139 L101,40Z" fill="#fff" opacity=".32"/><circle cx="100" cy="30" r="3.5" fill="#fff" opacity=".7"/>';
+    case 'prism':return '<defs>'+diag+topL+sideD+'</defs><polygon points="20,150 65,60 135,30 90,120" '+ft+' '+st+'/><polygon points="110,150 65,60 135,30 180,120" '+fs+' '+st+'/><polygon points="20,150 110,150 65,60" '+f+' '+st+'/><polygon points="63,72 33,132 42,132 68,84" fill="#fff" opacity=".32"/><line x1="24" y1="147" x2="62" y2="68" '+edge+'/>';
+  }
+  return '';
+}
+var BBOX={circle:[20,20,180,180],triangle:[15,20,185,170],square:[25,25,175,175],rectangle:[10,50,190,150],ellipse:[10,45,190,155],sphere:[20,20,180,180],cube:[30,30,170,170],cuboid:[15,40,175,170],cylinder:[30,30,170,170],cone:[30,15,170,177],prism:[20,30,180,150]};
+var SHY={circle:180,triangle:172,square:176,rectangle:152,ellipse:154,sphere:180,cube:172,cuboid:172,cylinder:172,cone:176,prism:152};
+var SHW={circle:62,triangle:78,square:66,rectangle:80,ellipse:78,sphere:62,cube:66,cuboid:74,cylinder:66,cone:62,prism:74};
+var FACE={circle:[100,100,1],triangle:[100,122,.72],square:[100,100,1],rectangle:[100,100,.85],ellipse:[100,100,.95],sphere:[100,102,1],cube:[80,122,.8],cuboid:[70,126,.72],cylinder:[100,106,.9],cone:[100,112,.7],prism:[65,124,.55]};
+function faceMarkup(t){
+  var f=FACE[t];if(!f){return '';}
+  return '<g transform="translate('+f[0]+' '+f[1]+') scale('+f[2]+')"><ellipse cx="-20" cy="-4" rx="8" ry="10" fill="#2b2a5c"/><ellipse cx="20" cy="-4" rx="8" ry="10" fill="#2b2a5c"/><circle cx="-17" cy="-8" r="3.2" fill="#fff"/><circle cx="23" cy="-8" r="3.2" fill="#fff"/><ellipse cx="-34" cy="14" rx="9" ry="5.5" fill="#ff7aa8" opacity=".6"/><ellipse cx="34" cy="14" rx="9" ry="5.5" fill="#ff7aa8" opacity=".6"/><path d="M-11,10 Q0,26 11,10 Z" fill="#8a1f3d" stroke="#2b2a5c" stroke-width="3" stroke-linejoin="round"/></g>';
+}
+function miniSVG(t,c,o){
+  o=o||{};c=c||SC[t];
+  var sh=o.shadow===false?'':'<ellipse cx="100" cy="'+(SHY[t]||178)+'" rx="'+(SHW[t]||70)+'" ry="9" fill="#2b2a5c" opacity=".2"/>';
+  var inner=shapeInner(t,c)+(o.face?faceMarkup(t):'');
+  return '<svg viewBox="0 0 200 200">'+sh+(o.bob?'<g class="bobg">'+inner+'</g>':inner)+'</svg>';
+}
+
+/* ================== บันทึกข้อมูล ================== */
+var KEY='geoExplorerKruJongza';
+var S={bestScore:0,bestRight:0,bestStars:0,plays:0,learned:[],missions:[]};
+try{var raw=localStorage.getItem(KEY);if(raw){S=Object.assign(S,JSON.parse(raw));}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+var MISSION_BONUS=20;
+function totalScore(){return S.bestScore+MISSION_BONUS*S.missions.length;}
+function refreshChips(){var n=document.querySelectorAll('.totalScore');for(var i=0;i<n.length;i++){n[i].textContent=totalScore();}}
+
+/* ================== ตัวช่วย ================== */
+var toastTimer=null;
+function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show');},2600);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function burst(x,y,n,em){
+  n=n||14;em=em||'⭐';
+  for(var i=0;i<n;i++){
+    (function(){
+      var s=document.createElement('span');s.className='fx';s.textContent=em;s.style.left=x+'px';s.style.top=y+'px';document.body.appendChild(s);
+      var a=Math.random()*Math.PI*2,d=70+Math.random()*130,rot=Math.floor(Math.random()*360);
+      if(s.animate){
+        var an=s.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:1},{transform:'translate(calc(-50% + '+(Math.cos(a)*d)+'px),calc(-50% + '+(Math.sin(a)*d)+'px)) scale(1.4) rotate('+rot+'deg)',opacity:0}],{duration:900+Math.random()*400,easing:'ease-out'});
+        an.onfinish=function(){s.remove();};
+      }else{setTimeout(function(){s.remove();},800);}
+    })();
+  }
+}
+function burstEl(el,n,em){var r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,n,em);}
+function confettiRain(){
+  var em=['⭐','✨','🎉','🎊','💫'];
+  for(var i=0;i<46;i++){(function(){
+    var s=document.createElement('span');s.className='fx';s.textContent=em[Math.floor(Math.random()*em.length)];
+    s.style.left=(Math.random()*100)+'vw';s.style.top='-40px';s.style.fontSize=(18+Math.random()*22)+'px';document.body.appendChild(s);
+    if(s.animate){var a=s.animate([{transform:'translateY(0) rotate(0deg)',opacity:1},{transform:'translateY('+(window.innerHeight+80)+'px) rotate('+Math.round(Math.random()*720-360)+'deg)',opacity:.9}],{duration:2200+Math.random()*1800,delay:Math.random()*900,easing:'ease-in',fill:'both'});a.onfinish=function(){s.remove();};}
+    else{setTimeout(function(){s.remove();},3000);}
+  })();}
+}
+
+/* ================== การเปลี่ยนหน้า ================== */
+function show(n){
+  var all=document.querySelectorAll('.screen');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('active');}
+  $('scr-'+n).classList.add('active');
+  document.body.classList.toggle('on-home',n==='home');
+  window.scrollTo(0,0);
+  refreshChips();
+  if(n==='learn'){renderLearn();}
+  if(n==='build'){initBuild();}
+  if(n==='score'){renderScore();}
+}
+function go(n){if(n==='quiz'){startQuiz();}else{show(n);}}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-go]');
+  if(b){go(b.getAttribute('data-go'));}
+});
+
+/* ================== หน้าแรก: ฉากตกแต่ง ================== */
+(function(){
+  var cols=['#ff5a5f','#ff9f43','#ffd93d','#3ddc84','#3fa9ff','#9b6bff'];
+  $('rainbow').innerHTML='<svg viewBox="0 0 340 180">'+cols.map(function(c,i){return '<path d="M'+(20+i*12)+',175 A'+(150-i*12)+','+(150-i*12)+' 0 0 1 '+(320-i*12)+',175" fill="none" stroke="'+c+'" stroke-width="13"/>';}).join('')+'</svg>';
+  $('mascot').innerHTML='<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">'
+   +'<defs><linearGradient id="mb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#78ccff"/><stop offset="1" stop-color="#3f86e8"/></linearGradient></defs>'
+   +'<rect x="72" y="196" width="22" height="34" rx="10" fill="#6a4bd8"/><rect x="106" y="196" width="22" height="34" rx="10" fill="#6a4bd8"/>'
+   +'<ellipse cx="82" cy="232" rx="18" ry="10" fill="#ff5a5f" stroke="#a82b30" stroke-width="3"/><ellipse cx="118" cy="232" rx="18" ry="10" fill="#ff5a5f" stroke="#a82b30" stroke-width="3"/>'
+   +'<rect x="54" y="146" width="92" height="62" rx="26" fill="url(#mb)" stroke="#2a63b8" stroke-width="3"/>'
+   +'<rect x="92" y="146" width="16" height="62" fill="#ffd93d" opacity=".9"/>'
+   +'<ellipse cx="50" cy="170" rx="13" ry="22" fill="#78ccff" stroke="#2a63b8" stroke-width="3" transform="rotate(20 50 170)"/>'
+   +'<ellipse cx="150" cy="168" rx="13" ry="22" fill="#78ccff" stroke="#2a63b8" stroke-width="3" transform="rotate(-25 150 168)"/>'
+   +'<circle cx="168" cy="146" r="14" fill="#cfefff" stroke="#8a55f5" stroke-width="5"/><line x1="178" y1="156" x2="190" y2="170" stroke="#8a55f5" stroke-width="6" stroke-linecap="round"/>'
+   +'<circle cx="100" cy="98" r="50" fill="#ffd8b0" stroke="#e0a574" stroke-width="3"/>'
+   +'<ellipse cx="100" cy="66" rx="70" ry="14" fill="#d99a2b" stroke="#9a6410" stroke-width="3"/>'
+   +'<path d="M52,66 Q54,24 100,22 Q146,24 148,66 Z" fill="#f2b742" stroke="#9a6410" stroke-width="3"/>'
+   +'<rect x="54" y="52" width="92" height="10" fill="#ff5a5f"/>'
+   +'<circle cx="80" cy="102" r="9" fill="#2b2a5c"/><circle cx="120" cy="102" r="9" fill="#2b2a5c"/>'
+   +'<circle cx="83" cy="99" r="3" fill="#fff"/><circle cx="123" cy="99" r="3" fill="#fff"/>'
+   +'<ellipse cx="68" cy="120" rx="9" ry="6" fill="#ff9bb5" opacity=".7"/><ellipse cx="132" cy="120" rx="9" ry="6" fill="#ff9bb5" opacity=".7"/>'
+   +'<path d="M84,124 Q100,142 116,124" fill="#fff" stroke="#b5472f" stroke-width="3" stroke-linejoin="round"/>'
+   +'</svg>';
+  var sky=$('sky'),h='';
+  for(var i=0;i<26;i++){
+    h+='<span class="twinkle" style="left:'+(Math.random()*96).toFixed(1)+'%;top:'+(Math.random()*55).toFixed(1)+'%;font-size:'+(12+Math.random()*16).toFixed(0)+'px;animation-delay:'+(Math.random()*2.4).toFixed(2)+'s">'+(i%3===0?'✨':'⭐')+'</span>';
+  }
+  var clouds=[[8,90,40,38],[22,180,56,52],[60,130,44,46]];
+  clouds.forEach(function(c){h+='<div class="cloud" style="top:'+c[0]+'%;width:'+c[1]+'px;height:'+c[2]+'px;animation-duration:'+(c[3]+30)+'s;animation-delay:-'+c[3]+'s"></div>';});
+  var fl=[['circle',4,52,64,0],['triangle',84,48,70,.8],['cube',8,74,70,1.4],['cylinder',86,72,64,.4],['cone',74,16,58,1.1],['sphere',16,24,58,1.8],['prism',90,28,60,.6],['square',2,34,52,2.2]];
+  fl.forEach(function(f){h+='<div class="floaty" style="left:'+f[1]+'%;top:'+f[2]+'%;width:'+f[3]+'px;height:'+f[3]+'px;animation-delay:'+f[4]+'s">'+miniSVG(f[0],null,{face:true,shadow:false})+'</div>';});
+  sky.innerHTML=h;
+})();
+
+/* ================== เรียนรู้รูปทรง ================== */
+var learnDim=2,learnSel='circle';
+function renderLearn(){
+  $('tab2').style.opacity=learnDim===2?'1':'.6';$('tab3').style.opacity=learnDim===3?'1':'.6';
+  var list=SHAPES.filter(function(s){return s.dim===learnDim;});
+  if(!list.some(function(s){return s.id===learnSel;})){learnSel=list[0].id;}
+  $('chips').innerHTML=list.map(function(s){return '<button class="chip-shape'+(s.id===learnSel?' on':'')+'" data-shape="'+s.id+'">'+miniSVG(s.id,null,{face:true})+'<span>'+s.name+'</span></button>';}).join('');
+  var s=SMAP[learnSel];
+  if(S.learned.indexOf(s.id)<0){
+    S.learned.push(s.id);save();
+    if(S.learned.length===SHAPES.length){toast('🧭 ได้รับเหรียญ “นักเรียนรู้รูปทรง” แล้ว!');}
+  }
+  $('learnProg').textContent=S.learned.length;
+  $('detail').innerHTML='<div class="dvis">'+miniSVG(s.id,null,{face:true,bob:true})+'</div><div class="dtxt"><h3>'+(s.dim===2?'รูปสองมิติ':'รูปสามมิติ')+': '+s.name+'</h3><p>'+s.desc+'</p>'
+   +'<div class="pills">'+s.counts.map(function(c){return '<div class="pill">'+c[0]+'<b>'+c[1]+'</b></div>';}).join('')+'</div>'
+   +'<h4>🔎 ตัวอย่างสิ่งของรอบตัว</h4><div class="exs">'+s.ex.map(function(x){return '<div class="ex"><span>'+x[0]+'</span>'+x[1]+'</div>';}).join('')+'</div>'
+   +'<div class="tip">💡 '+s.tip+'</div></div>';
+}
+$('tab2').addEventListener('click',function(){learnDim=2;renderLearn();});
+$('tab3').addEventListener('click',function(){learnDim=3;renderLearn();});
+$('chips').addEventListener('click',function(e){var b=e.target.closest('[data-shape]');if(b){learnSel=b.getAttribute('data-shape');renderLearn();}});
+
+/* ================== ทายรูปทรงปริศนา ================== */
+var QN=20;
+var QBANK=[
+ {v:{e:'🔍'},q:'รูปใดมี 3 ด้านและ 3 มุม',a:'สามเหลี่ยม',w:['วงกลม','สี่เหลี่ยมจัตุรัส','วงรี'],why:'สามเหลี่ยมมี 3 ด้านและ 3 มุม'},
+ {v:{e:'⚽'},q:'ลูกบอลมีลักษณะใกล้เคียงกับรูปทรงใด',a:'ทรงกลม',w:['ลูกบาศก์','ทรงกระบอก','ทรงกรวย'],why:'ลูกบอลกลมทุกด้าน เหมือนทรงกลม'},
+ {v:{e:'🥫'},q:'กระป๋องน้ำมีลักษณะเหมือนรูปทรงใด',a:'ทรงกระบอก',w:['ทรงกลม','ทรงกรวย','ลูกบาศก์'],why:'กระป๋องมีฐานบนและล่างเป็นวงกลม เหมือนทรงกระบอก'},
+ {v:{e:'⏰'},q:'หน้าปัดนาฬิกามีลักษณะเหมือนรูปสองมิติใด',a:'วงกลม',w:['สามเหลี่ยม','สี่เหลี่ยมผืนผ้า','วงรี'],why:'หน้าปัดนาฬิกากลมเรียบ ไม่มีมุม เหมือนวงกลม'},
+ {v:{s:'cube'},q:'ลูกบาศก์มีลักษณะเด่นอย่างไร',a:'มี 6 หน้าเป็นสี่เหลี่ยมจัตุรัสเท่ากันทุกหน้า',w:['มีหน้าโค้ง 1 หน้า','มี 2 หน้าเป็นวงกลม','มีจุดยอดเพียง 1 จุด'],why:'ลูกบาศก์มี 6 หน้า แต่ละหน้าเป็นสี่เหลี่ยมจัตุรัสเท่ากัน'},
+ {v:{s:'square'},q:'รูปนี้มีชื่อว่าอะไร',a:'สี่เหลี่ยมจัตุรัส',w:['สี่เหลี่ยมผืนผ้า','วงรี','สามเหลี่ยม'],why:'มี 4 ด้านยาวเท่ากัน และมี 4 มุมฉาก'},
+ {v:{s:'rectangle'},q:'รูปนี้มีชื่อว่าอะไร',a:'สี่เหลี่ยมผืนผ้า',w:['สี่เหลี่ยมจัตุรัส','วงรี','สามเหลี่ยม'],why:'มี 4 ด้าน ด้านตรงข้ามยาวเท่ากัน และมี 4 มุมฉาก'},
+ {v:{s:'ellipse'},q:'รูปนี้มีชื่อว่าอะไร',a:'วงรี',w:['วงกลม','สี่เหลี่ยมผืนผ้า','สามเหลี่ยม'],why:'วงรีเหมือนวงกลมที่ถูกบีบให้แบน'},
+ {v:{e:'🍦'},q:'โคนไอศกรีมมีลักษณะเหมือนรูปทรงใด',a:'ทรงกรวย',w:['ทรงกระบอก','ลูกบาศก์','ทรงกลม'],why:'โคนไอศกรีมมีฐานกลมและเรียวไปที่ปลายแหลม เหมือนทรงกรวย'},
+ {v:{e:'🎲'},q:'ลูกเต๋ามีลักษณะเหมือนรูปทรงใด',a:'ลูกบาศก์',w:['ทรงกลม','ทรงกรวย','ทรงกระบอก'],why:'ลูกเต๋ามี 6 หน้าเป็นสี่เหลี่ยมจัตุรัส เหมือนลูกบาศก์'},
+ {v:{e:'📦'},q:'กล่องพัสดุที่ยาวและสูงมีลักษณะเหมือนรูปทรงใด',a:'ทรงสี่เหลี่ยมมุมฉาก',w:['ทรงกลม','ทรงกรวย','ทรงกระบอก'],why:'กล่องพัสดุมีหน้าเป็นสี่เหลี่ยมผืนผ้า จึงเป็นทรงสี่เหลี่ยมมุมฉาก'},
+ {v:{s:'cone'},q:'ทรงกรวยมีกี่จุดยอด',a:'1 จุดยอด',w:['0 จุดยอด','2 จุดยอด','8 จุดยอด'],why:'ปลายแหลมด้านบนของทรงกรวยคือจุดยอด 1 จุด'},
+ {v:{s:'cube'},q:'ลูกบาศก์มีกี่จุดยอด',a:'8 จุดยอด',w:['4 จุดยอด','6 จุดยอด','12 จุดยอด'],why:'ลูกบาศก์มีจุดยอด 8 จุด (บน 4 ล่าง 4)'},
+ {v:{s:'sphere'},q:'ทรงกลมมีกี่จุดยอด',a:'ไม่มีจุดยอด',w:['1 จุดยอด','2 จุดยอด','8 จุดยอด'],why:'ทรงกลมเรียบโค้งทั้งลูก จึงไม่มีจุดยอด'},
+ {v:{s:'prism'},q:'ปริซึมสามเหลี่ยมมีกี่หน้า',a:'5 หน้า',w:['3 หน้า','4 หน้า','6 หน้า'],why:'มีฐานสามเหลี่ยม 2 หน้า และหน้าข้างสี่เหลี่ยม 3 หน้า รวม 5 หน้า'},
+ {v:{e:'⛺'},q:'เต็นท์แบบนี้มีลักษณะเหมือนรูปทรงใด',a:'ปริซึมสามเหลี่ยม',w:['ทรงกลม','ทรงกระบอก','ลูกบาศก์'],why:'เต็นท์มีหน้าตัดเป็นสามเหลี่ยม เหมือนปริซึมสามเหลี่ยม'},
+ {v:{e:'🍕'},q:'พิซซ่า 1 ชิ้นมีลักษณะเหมือนรูปสองมิติใด',a:'สามเหลี่ยม',w:['วงกลม','สี่เหลี่ยมจัตุรัส','วงรี'],why:'พิซซ่าหนึ่งชิ้นมี 3 ด้าน เหมือนสามเหลี่ยม'},
+ {v:{e:'📺'},q:'หน้าจอโทรทัศน์มีลักษณะเหมือนรูปสองมิติใด',a:'สี่เหลี่ยมผืนผ้า',w:['วงกลม','สามเหลี่ยม','วงรี'],why:'หน้าจอมี 4 ด้านและ 4 มุมฉาก ด้านตรงข้ามยาวเท่ากัน'},
+ {v:{e:'🥚'},q:'ไข่ไก่เมื่อมองจากด้านข้างคล้ายรูปสองมิติใด',a:'วงรี',w:['สามเหลี่ยม','สี่เหลี่ยมจัตุรัส','สี่เหลี่ยมผืนผ้า'],why:'ไข่ไก่เป็นรูปไข่ ขอบโค้งไม่มีมุม เหมือนวงรี'},
+ {v:{s:'cylinder'},q:'รูปทรงสามมิติใดมีหน้าแบนเป็นวงกลม 2 หน้า และมีผิวโค้งด้านข้าง',a:'ทรงกระบอก',w:['ทรงกรวย','ทรงกลม','ลูกบาศก์'],why:'ทรงกระบอกมีฐานบนและฐานล่างเป็นวงกลม'},
+ {v:{s:'square'},q:'รูปใดมี 4 ด้านยาวเท่ากันและมี 4 มุมฉาก',a:'สี่เหลี่ยมจัตุรัส',w:['สี่เหลี่ยมผืนผ้า','สามเหลี่ยม','วงกลม'],why:'สี่เหลี่ยมจัตุรัสมีด้านยาวเท่ากันทั้ง 4 ด้าน'},
+ {v:{s:'cone'},q:'ฐานของทรงกรวยเป็นรูปสองมิติใด',a:'วงกลม',w:['สามเหลี่ยม','สี่เหลี่ยมจัตุรัส','วงรี'],why:'ฐานของทรงกรวยเป็นวงกลม'},
+ {v:{e:'🧊'},q:'น้ำแข็งก้อนเหลี่ยมมีลักษณะเหมือนรูปทรงใด',a:'ลูกบาศก์',w:['ทรงกลม','ทรงกรวย','ทรงกระบอก'],why:'ก้อนน้ำแข็งมี 6 หน้าเท่ากัน เหมือนลูกบาศก์'},
+ {v:{s:'cuboid'},q:'ทรงสี่เหลี่ยมมุมฉากมีกี่ขอบ',a:'12 ขอบ',w:['6 ขอบ','8 ขอบ','10 ขอบ'],why:'ทรงสี่เหลี่ยมมุมฉากมี 12 ขอบ (บน 4 ล่าง 4 ด้านข้าง 4)'},
+ {v:{e:'🛢️'},q:'ถังน้ำมันมีลักษณะเหมือนรูปทรงใด',a:'ทรงกระบอก',w:['ทรงกลม','ทรงกรวย','ปริซึมสามเหลี่ยม'],why:'ถังน้ำมันมีฐานกลม 2 ด้านและผิวโค้งด้านข้าง เหมือนทรงกระบอก'},
+ {v:{e:'🏀'},q:'ลูกบาสเกตบอลมีลักษณะเหมือนรูปทรงใด',a:'ทรงกลม',w:['ลูกบาศก์','ทรงกระบอก','ทรงกรวย'],why:'ลูกบาสเกตบอลกลมทุกด้าน เหมือนทรงกลม'}
+];
+var quiz=null,LET=['ก','ข','ค','ง'];
+function startQuiz(){
+  var picked=shuffle(QBANK).slice(0,QN);
+  quiz={list:picked.map(function(q){return {v:q.v,q:q.q,a:q.a,why:q.why,opts:shuffle([q.a].concat(q.w))};}),i:0,score:0,right:0,answered:false};
+  show('quiz');renderQ();
+}
+function renderQ(){
+  var q=quiz.list[quiz.i];quiz.answered=false;
+  $('qNum').textContent='ข้อ '+(quiz.i+1)+' / '+quiz.list.length;
+  $('qRight').textContent=quiz.right;$('qScore').textContent=quiz.score;
+  $('qBar').style.width=(quiz.i/quiz.list.length*100)+'%';
+  $('qText').textContent=q.q;
+  $('qVisual').innerHTML=q.v.s?miniSVG(q.v.s,null,{face:true,bob:true}):'<div class="bigemoji">'+q.v.e+'</div>';
+  $('qOpts').innerHTML=q.opts.map(function(o,i){return '<button class="opt" data-i="'+i+'"><span class="lt">'+LET[i]+'</span><span>'+o+'</span></button>';}).join('');
+  var fb=$('qFb');fb.className='fb';fb.innerHTML='';
+  $('qNext').style.display='none';
+}
+$('qOpts').addEventListener('click',function(e){
+  var b=e.target.closest('.opt');if(!b||!quiz||quiz.answered){return;}
+  quiz.answered=true;
+  var q=quiz.list[quiz.i],i=parseInt(b.getAttribute('data-i'),10),ok=q.opts[i]===q.a;
+  var all=$('qOpts').querySelectorAll('.opt');
+  for(var k=0;k<all.length;k++){
+    all[k].disabled=true;
+    if(q.opts[parseInt(all[k].getAttribute('data-i'),10)]===q.a){all[k].classList.add('good');}
+  }
+  var fb=$('qFb');
+  if(ok){
+    quiz.right++;quiz.score+=10;
+    fb.className='fb show ok';fb.innerHTML='<b>🎉 เก่งมาก! ตอบถูกแล้ว</b>'+q.why;
+    burstEl(b,16,'⭐');
+  }else{
+    b.classList.add('bad');
+    fb.className='fb show no';fb.innerHTML='<b>💪 ไม่เป็นไรนะ สู้ ๆ! ครั้งหน้าต้องทำได้</b>คำตอบที่ถูกคือ “'+q.a+'” เพราะ '+q.why;
+  }
+  $('qRight').textContent=quiz.right;$('qScore').textContent=quiz.score;
+  $('qBar').style.width=((quiz.i+1)/quiz.list.length*100)+'%';
+  var last=quiz.i===quiz.list.length-1;
+  $('qNext').textContent=last?'ดูผลคะแนน 🏆':'ข้อต่อไป ➡️';
+  $('qNext').style.display='inline-block';
+});
+$('qNext').addEventListener('click',function(){
+  if(!quiz||!quiz.answered){return;}
+  if(quiz.i>=quiz.list.length-1){finishQuiz();}else{quiz.i++;renderQ();}
+});
+$('qRestart').addEventListener('click',startQuiz);
+$('rAgain').addEventListener('click',startQuiz);
+function finishQuiz(){
+  var r=quiz.right,stars=r>=18?3:(r>=12?2:1);
+  S.plays++;
+  if(quiz.score>=S.bestScore){S.bestScore=quiz.score;S.bestRight=r;S.bestStars=stars;}
+  save();
+  var medal=r>=18?['🥇','เหรียญทอง นักสำรวจตัวเก่ง']:(r>=12?['🥈','เหรียญเงิน นักสำรวจฝีมือดี']:['🥉','เหรียญทองแดง นักสำรวจหน้าใหม่']);
+  var msgs={3:'ยอดเยี่ยมที่สุด! คุณรู้จักรูปเรขาคณิตเป็นอย่างดี เก่งมากจริง ๆ',2:'เก่งมาก! เหลืออีกนิดเดียวก็ได้สามดาวแล้ว ลองเล่นอีกครั้งนะ',1:'ไม่เป็นไร ทุกคนเริ่มต้นได้ ลองกลับไปเรียนรู้รูปทรงแล้วกลับมาท้าทายอีกครั้งนะ'};
+  var h='';for(var i=1;i<=3;i++){h+='<span class="'+(i<=stars?'':'off')+'">⭐</span>';}
+  $('rStars').innerHTML=h;$('rScore').textContent=quiz.score;$('rRight').textContent=r;
+  $('rMedal').textContent=medal[0];$('rMedalName').textContent=medal[1];$('rMsg').textContent=msgs[stars];
+  show('result');
+  if(stars>=2){setTimeout(function(){burstEl($('rStars'),stars===3?30:18,'⭐');confettiRain();},300);}
+}
+
+/* ================== หน้าคะแนน ================== */
+var MISSIONS;/* กำหนดด้านล่าง */
+function medalList(){
+  return [
+   {i:'🧭',n:'นักเรียนรู้รูปทรง',d:'เปิดดูครบทั้ง 11 รูปทรง',ok:S.learned.length>=SHAPES.length},
+   {i:'🥉',n:'เหรียญทองแดง',d:'เล่นด่านทายรูปทรงจนจบ 1 ครั้ง',ok:S.plays>0},
+   {i:'🥈',n:'เหรียญเงิน',d:'ตอบถูกอย่างน้อย 12 ข้อ',ok:S.bestRight>=12},
+   {i:'🥇',n:'เหรียญทอง',d:'ตอบถูกอย่างน้อย 18 ข้อ',ok:S.bestRight>=18},
+   {i:'🏗️',n:'สถาปนิกน้อย',d:'ทำภารกิจสร้างสิ่งของสำเร็จ 1 ภารกิจ',ok:S.missions.length>=1},
+   {i:'👑',n:'ราชานักสร้าง',d:'ทำภารกิจสำเร็จครบทุกภารกิจ',ok:S.missions.length>=MISSIONS.length}
+  ];
+}
+function renderScore(){
+  var st='';for(var i=1;i<=3;i++){st+=(i<=S.bestStars?'⭐':'☆');}
+  $('stats').innerHTML=
+   '<div class="stat">คะแนนรวม<b>'+totalScore()+'</b></div>'
+   +'<div class="stat">คะแนนทายปริศนาสูงสุด<b>'+S.bestScore+'</b></div>'
+   +'<div class="stat">ดาวรางวัล<b>'+(S.plays?st:'☆☆☆')+'</b></div>'
+   +'<div class="stat">ภารกิจสำเร็จ<b>'+S.missions.length+'/'+MISSIONS.length+'</b></div>'
+   +'<div class="stat">รูปทรงที่เรียนแล้ว<b>'+S.learned.length+'/11</b></div>';
+  $('medals').innerHTML=medalList().map(function(m){return '<div class="medal'+(m.ok?'':' lock')+'"><div class="i">'+m.i+'</div>'+m.n+'<small>'+m.d+'</small></div>';}).join('');
+}
+$('resetAll').addEventListener('click',function(){
+  if(window.confirm('ต้องการล้างคะแนนและเหรียญทั้งหมดใช่ไหม?')){
+    S={bestScore:0,bestRight:0,bestStars:0,plays:0,learned:[],missions:[]};save();renderScore();refreshChips();
+    if(window.BUILD_REFRESH){window.BUILD_REFRESH();}
+    toast('ล้างข้อมูลเรียบร้อยแล้ว');
+  }
+});
+
+/* ================== ด่านสร้างสิ่งของ ================== */
+var COLORS=['#ff5a5f','#ff9f43','#ffd93d','#3ddc84','#3fa9ff','#9b6bff','#ff7ac6','#b9784a','#9aa5b1','#ffffff','#4a4a6a'];
+var cR='#ff5a5f',cO='#ff9f43',cY='#ffd93d',cG='#3ddc84',cB='#3fa9ff',cP='#9b6bff',cK='#ff7ac6',cBr='#b9784a',cGr='#9aa5b1',cW='#ffffff',cD='#4a4a6a';
+MISSIONS=[
+ {id:'house',icon:'🏠',name:'บ้าน',goal:'สร้างบ้านที่มีหลังคาสามเหลี่ยม',
+  praise:'🎉 สุดยอด! คุณสร้างบ้านที่มีหลังคาสามเหลี่ยมสำเร็จแล้ว เป็นสถาปนิกตัวน้อยจริง ๆ',
+  reqs:[{t:'สามเหลี่ยม (หลังคา)',n:1,f:function(c){return c.triangle;}},{t:'สี่เหลี่ยมจัตุรัสหรือผืนผ้า (ตัวบ้าน ประตู)',n:2,f:function(c){return c.quad;}}]},
+ {id:'robot',icon:'🤖',name:'หุ่นยนต์',goal:'สร้างหุ่นยนต์จากวงกลม สี่เหลี่ยม และรูปทรงสามมิติ',
+  praise:'🤖 เยี่ยมมาก! หุ่นยนต์ของคุณพร้อมออกสำรวจแล้ว ใช้รูปทรงได้ครบถ้วนเลย',
+  reqs:[{t:'วงกลม (ดวงตา)',n:2,f:function(c){return c.circle;}},{t:'สี่เหลี่ยม (หัว ลำตัว)',n:2,f:function(c){return c.quad;}},{t:'รูปทรงสามมิติ',n:1,f:function(c){return c.solid;}}]},
+ {id:'car',icon:'🚗',name:'รถยนต์',goal:'สร้างรถยนต์จากสี่เหลี่ยมและวงกลม',
+  praise:'🚗 เก่งมาก! รถยนต์คันนี้มีล้อกลมและตัวรถสี่เหลี่ยม พร้อมออกวิ่งแล้ว',
+  reqs:[{t:'สี่เหลี่ยม (ตัวรถ หน้าต่าง)',n:2,f:function(c){return c.quad;}},{t:'วงกลม (ล้อรถ)',n:2,f:function(c){return c.circle;}}]},
+ {id:'rocket',icon:'🚀',name:'จรวด',goal:'สร้างจรวดจากสามเหลี่ยมและสี่เหลี่ยม',
+  praise:'🚀 3 2 1 ปล่อยจรวด! คุณสร้างจรวดจากสามเหลี่ยมและสี่เหลี่ยมได้อย่างยอดเยี่ยม',
+  reqs:[{t:'สามเหลี่ยม (หัวจรวด ครีบ)',n:2,f:function(c){return c.triangle;}},{t:'สี่เหลี่ยม (ลำตัวจรวด)',n:1,f:function(c){return c.quad;}}]},
+ {id:'castle',icon:'🏰',name:'ปราสาท',goal:'สร้างปราสาทจากรูปทรงต่าง ๆ',
+  praise:'🏰 ตระการตา! ปราสาทของคุณสวยงามและใช้รูปทรงหลากหลายมาก',
+  reqs:[{t:'รูปทรงที่ต่างชนิดกัน',n:4,f:function(c){return c.types;}},{t:'ชิ้นส่วนทั้งหมด',n:6,f:function(c){return c.total;}}]},
+ {id:'free',icon:'🌈',name:'อิสระ',goal:'สร้างผลงานอิสระตามจินตนาการ',
+  praise:'🌈 สร้างสรรค์มาก! ผลงานจากจินตนาการของคุณน่าชื่นชมจริง ๆ',
+  reqs:[{t:'ชิ้นส่วนทั้งหมด',n:3,f:function(c){return c.total;}},{t:'รูปทรงที่ต่างชนิดกัน',n:2,f:function(c){return c.types;}}]}
+];
+/* รูปแบบ: [ชนิด, x, y, ขนาด, หมุน, สี] */
+var TPL={
+ house:[['square',400,380,1,0,cK],['triangle',400,228,1.1,0,cR],['rectangle',400,415,.45,90,cBr],['square',350,352,.25,0,cB],['square',450,352,.25,0,cB],['rectangle',620,430,.3,90,cBr],['circle',620,378,.62,0,cG],['circle',690,90,.5,0,cY]],
+ robot:[['rectangle',400,152,.25,90,cGr],['circle',400,126,.2,0,cR],['cylinder',400,255,.3,0,cGr],['cube',400,330,1,0,cB],['square',400,195,.7,0,cGr],['circle',376,190,.2,0,cW],['circle',424,190,.2,0,cW],['cylinder',298,330,.5,90,cP],['cylinder',502,330,.5,90,cP],['rectangle',368,436,.4,90,cO],['rectangle',432,436,.4,90,cO]],
+ car:[['rectangle',400,360,1.2,0,cR],['rectangle',400,265,.7,0,cB],['square',365,265,.3,0,cW],['square',435,265,.3,0,cW],['circle',340,425,.5,0,cD],['circle',340,425,.25,0,cGr],['circle',460,425,.5,0,cD],['circle',460,425,.25,0,cGr],['circle',494,345,.15,0,cY]],
+ rocket:[['triangle',400,432,.45,180,cO],['triangle',400,425,.25,180,cY],['triangle',325,382,.55,-20,cK],['triangle',475,382,.55,20,cK],['rectangle',400,300,1.2,90,'#dfe9ff'],['triangle',400,143,.7,0,cR],['circle',400,265,.4,0,cB],['circle',140,100,.12,0,cY],['circle',660,150,.1,0,cY],['circle',620,70,.14,0,cY]],
+ castle:[['rectangle',400,300,1,90,cP],['cone',400,161,.7,0,cR],['rectangle',400,390,1.6,0,cK],['rectangle',270,380,.9,90,cP],['rectangle',530,380,.9,90,cP],['triangle',270,253,.65,0,cR],['triangle',530,253,.65,0,cR],['rectangle',400,425,.5,90,cBr],['square',400,270,.2,0,cY],['square',270,340,.2,0,cY],['square',530,340,.2,0,cY]]
+};
+var B={els:[],sel:null,armed:null,next:1,mission:'house',drag:null,color:null,inited:false};
+var board=$('board'),layer=$('layer');
+
+function pieceMarkup(p){
+  return '<g class="piece" data-id="'+p.id+'" transform="translate('+p.x+' '+p.y+') rotate('+p.r+') scale('+p.s+') translate(-100 -100)" style="cursor:move">'+shapeInner(p.type,p.color)+'</g>';
+}
+function selMarkup(){
+  var p=getEl(B.sel);if(!p){return '';}
+  var b=BBOX[p.type],pad=8;
+  var x=(b[0]-100)*p.s-pad,y=(b[1]-100)*p.s-pad,w=(b[2]-b[0])*p.s+pad*2,h=(b[3]-b[1])*p.s+pad*2;
+  return '<g class="sel" transform="translate('+p.x+' '+p.y+') rotate('+p.r+')" pointer-events="none"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="12" fill="rgba(155,107,255,.08)" stroke="#7c4dff" stroke-width="3" stroke-dasharray="9 6"/></g>';
+}
+function getEl(id){for(var i=0;i<B.els.length;i++){if(B.els[i].id===id){return B.els[i];}}return null;}
+function render(){layer.innerHTML='<g style="filter:drop-shadow(0 6px 4px rgba(40,30,100,.3))">'+B.els.map(pieceMarkup).join('')+'</g>'+selMarkup();updateUI();}
+function svgPoint(e){
+  var p=board.createSVGPoint();p.x=e.clientX;p.y=e.clientY;
+  var r=p.matrixTransform(board.getScreenCTM().inverse());
+  return {x:r.x,y:r.y};
+}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function addPiece(type,x,y){
+  var p={id:B.next++,type:type,x:Math.round(clamp(x,0,800)),y:Math.round(clamp(y,0,520)),s:.7,r:0,color:B.color||SC[type]};
+  B.els.push(p);B.sel=p.id;
+}
+board.addEventListener('pointerdown',function(e){
+  var g=e.target.closest?e.target.closest('.piece'):null;
+  var pt=svgPoint(e);
+  if(g){
+    var id=parseInt(g.getAttribute('data-id'),10),el=getEl(id);
+    if(!el){return;}
+    B.sel=id;B.armed=null;B.drag={id:id,dx:el.x-pt.x,dy:el.y-pt.y};
+    try{board.setPointerCapture(e.pointerId);}catch(err){}
+    e.preventDefault();render();return;
+  }
+  if(B.armed){addPiece(B.armed,pt.x,pt.y);B.armed=null;render();return;}
+  B.sel=null;render();
+});
+board.addEventListener('pointermove',function(e){
+  if(!B.drag){return;}
+  var el=getEl(B.drag.id);if(!el){return;}
+  var pt=svgPoint(e);
+  el.x=Math.round(clamp(pt.x+B.drag.dx,0,800));el.y=Math.round(clamp(pt.y+B.drag.dy,0,520));
+  render();
+});
+function endDrag(){B.drag=null;}
+board.addEventListener('pointerup',endDrag);
+board.addEventListener('pointercancel',endDrag);
+
+function counts(){
+  var c={total:B.els.length,types:0,quad:0,solid:0},seen={};
+  SHAPES.forEach(function(s){c[s.id]=0;});
+  B.els.forEach(function(p){c[p.type]++;seen[p.type]=1;if(SMAP[p.type].dim===3){c.solid++;}});
+  c.types=Object.keys(seen).length;c.quad=c.square+c.rectangle;
+  return c;
+}
+function curMission(){for(var i=0;i<MISSIONS.length;i++){if(MISSIONS[i].id===B.mission){return MISSIONS[i];}}return MISSIONS[0];}
+function missionState(){
+  var m=curMission(),c=counts(),all=true,li='';
+  m.reqs.forEach(function(r){var have=r.f(c),ok=have>=r.n;if(!ok){all=false;}li+='<li>'+(ok?'✅':'⬜')+' '+r.t+' ('+Math.min(have,r.n)+'/'+r.n+')</li>';});
+  return {m:m,all:all,html:li};
+}
+function updateUI(){
+  var has=!!getEl(B.sel);
+  var btns=document.querySelectorAll('#scr-build [data-act]');
+  for(var i=0;i<btns.length;i++){
+    var a=btns[i].getAttribute('data-act');
+    if(['rotL','rotR','smaller','bigger','front','back','dup','del'].indexOf(a)>=0){btns[i].disabled=!has;}
+  }
+  var pb=document.querySelectorAll('.pbtn');
+  for(var j=0;j<pb.length;j++){pb[j].classList.toggle('on',pb[j].getAttribute('data-t')===B.armed);}
+  board.classList.toggle('armed',!!B.armed);
+  $('bHint').textContent=B.armed?'👉 ตอนนี้แตะบนกระดานเพื่อวาง “'+SMAP[B.armed].name+'”':(has?'✋ ลากเพื่อย้าย หรือใช้เครื่องมือด้านขวา (สี หมุน ย่อ-ขยาย ลบ)':'👆 แตะรูปทรงด้านบนก่อน แล้วแตะบนกระดาน');
+  var sw=document.querySelectorAll('.sw');
+  var cur=has?getEl(B.sel).color:B.color;
+  for(var k=0;k<sw.length;k++){sw[k].classList.toggle('on',cur===sw[k].getAttribute('data-c'));}
+  var ms=missionState();
+  $('mChecks').innerHTML=ms.html;
+  var chips=document.querySelectorAll('.mchip');
+  for(var q=0;q<chips.length;q++){
+    var id=chips[q].getAttribute('data-m');
+    chips[q].classList.toggle('on',id===B.mission);
+    chips[q].classList.toggle('done',S.missions.indexOf(id)>=0);
+  }
+  var pr=$('mPraise');
+  if(ms.all){
+    pr.textContent=ms.m.praise;pr.classList.add('show');
+    if(S.missions.indexOf(ms.m.id)<0){
+      S.missions.push(ms.m.id);save();refreshChips();
+      toast('🎉 ภารกิจสำเร็จ! โบนัส +'+MISSION_BONUS+' คะแนน');
+      setTimeout(function(){burstEl(pr,22,'⭐');},100);
+      var cs=document.querySelectorAll('.mchip');for(var z=0;z<cs.length;z++){cs[z].classList.toggle('done',S.missions.indexOf(cs[z].getAttribute('data-m'))>=0);}
+    }
+  }else{pr.classList.remove('show');}
+}
+function initBuild(){
+  if(!B.inited){
+    B.inited=true;
+    $('pal').innerHTML=SHAPES.map(function(s){return '<button class="pbtn" data-t="'+s.id+'">'+miniSVG(s.id)+'<span>'+s.name+'</span></button>';}).join('');
+    $('swatches').innerHTML=COLORS.map(function(c){return '<button class="sw" data-c="'+c+'" style="background:'+c+'" aria-label="สี"></button>';}).join('');
+    $('mchips').innerHTML=MISSIONS.map(function(m){return '<button class="mchip" data-m="'+m.id+'">'+m.icon+' '+m.name+'</button>';}).join('');
+    $('mGoal').textContent='🎯 '+curMission().goal;
+  }
+  render();
+}
+window.BUILD_REFRESH=function(){if(B.inited){updateUI();}};
+$('pal').addEventListener('click',function(e){
+  var b=e.target.closest('.pbtn');if(!b){return;}
+  var t=b.getAttribute('data-t');B.armed=(B.armed===t)?null:t;updateUI();
+});
+$('swatches').addEventListener('click',function(e){
+  var b=e.target.closest('.sw');if(!b){return;}
+  var c=b.getAttribute('data-c');B.color=c;
+  var el=getEl(B.sel);if(el){el.color=c;}
+  render();
+});
+$('mchips').addEventListener('click',function(e){
+  var b=e.target.closest('.mchip');if(!b){return;}
+  B.mission=b.getAttribute('data-m');$('mGoal').textContent='🎯 '+curMission().goal;updateUI();
+});
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-tpl]');
+  if(t){
+    var arr=TPL[t.getAttribute('data-tpl')];
+    B.els=arr.map(function(a){return {id:B.next++,type:a[0],x:a[1],y:a[2],s:a[3],r:a[4],color:a[5]};});
+    B.sel=null;B.armed=null;render();toast('โหลดตัวอย่างผลงานแล้ว ลองลากและแก้ไขได้เลย');
+  }
+});
+function reorder(toFront){
+  var el=getEl(B.sel);if(!el){return;}
+  B.els=B.els.filter(function(p){return p.id!==el.id;});
+  if(toFront){B.els.push(el);}else{B.els.unshift(el);}
+  render();
+}
+function savePNG(){
+  if(!B.els.length){toast('วางรูปทรงบนกระดานก่อน แล้วค่อยบันทึกนะ');return;}
+  var clone=board.cloneNode(true);
+  var sels=clone.querySelectorAll('.sel');for(var i=0;i<sels.length;i++){sels[i].parentNode.removeChild(sels[i]);}
+  clone.removeAttribute('id');clone.removeAttribute('class');clone.removeAttribute('style');
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');clone.setAttribute('width','1600');clone.setAttribute('height','1040');
+  var xml=new XMLSerializer().serializeToString(clone);
+  var img=new Image();
+  img.onload=function(){
+    try{
+      var cv=document.createElement('canvas');cv.width=1600;cv.height=1040;
+      var ctx=cv.getContext('2d');ctx.drawImage(img,0,0,1600,1040);
+      var a=document.createElement('a');a.download='geometry-art.png';
+      if(cv.toBlob){
+        cv.toBlob(function(blob){a.href=URL.createObjectURL(blob);document.body.appendChild(a);a.click();document.body.removeChild(a);toast('💾 บันทึกภาพเรียบร้อยแล้ว');});
+      }else{a.href=cv.toDataURL('image/png');document.body.appendChild(a);a.click();document.body.removeChild(a);toast('💾 บันทึกภาพเรียบร้อยแล้ว');}
+    }catch(err){toast('บันทึกภาพไม่สำเร็จ ลองใช้การแคปหน้าจอแทนนะ');}
+  };
+  img.onerror=function(){toast('บันทึกภาพไม่สำเร็จ ลองใช้การแคปหน้าจอแทนนะ');};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('#scr-build [data-act]');if(!b){return;}
+  var a=b.getAttribute('data-act'),el=getEl(B.sel);
+  switch(a){
+    case 'rotL':if(el){el.r=(el.r-15)%360;render();}break;
+    case 'rotR':if(el){el.r=(el.r+15)%360;render();}break;
+    case 'smaller':if(el){el.s=Math.max(.15,+(el.s/1.15).toFixed(3));render();}break;
+    case 'bigger':if(el){el.s=Math.min(4,+(el.s*1.15).toFixed(3));render();}break;
+    case 'front':reorder(true);break;
+    case 'back':reorder(false);break;
+    case 'dup':if(el){var n={id:B.next++,type:el.type,x:clamp(el.x+24,0,800),y:clamp(el.y+24,0,520),s:el.s,r:el.r,color:el.color};B.els.push(n);B.sel=n.id;render();}break;
+    case 'del':if(el){B.els=B.els.filter(function(p){return p.id!==el.id;});B.sel=null;render();}break;
+    case 'clear':
+      if(!B.els.length){toast('กระดานว่างอยู่แล้ว');break;}
+      if(window.confirm('ต้องการล้างกระดานทั้งหมดใช่ไหม?')){B.els=[];B.sel=null;B.armed=null;render();}
+      break;
+    case 'reset':
+      if(!B.els.length||window.confirm('เริ่มใหม่ทั้งหมดใช่ไหม?')){B.els=[];B.sel=null;B.armed=null;B.color=null;B.mission='house';$('mGoal').textContent='🎯 '+curMission().goal;render();}
+      break;
+    case 'png':savePNG();break;
+    case 'check':
+      var ms=missionState();
+      if(ms.all){burstEl(b,24,'⭐');toast(ms.m.praise);}
+      else{
+        var miss=[];ms.m.reqs.forEach(function(r){var have=r.f(counts());if(have<r.n){miss.push(r.t+' อีก '+(r.n-have));}});
+        toast('ยังขาด: '+miss.join(' และ '));
+      }
+      break;
+  }
+});
+document.addEventListener('keydown',function(e){
+  if(!$('scr-build').classList.contains('active')){return;}
+  if(e.key==='Delete'||e.key==='Backspace'){
+    var el=getEl(B.sel);
+    if(el){B.els=B.els.filter(function(p){return p.id!==el.id;});B.sel=null;render();e.preventDefault();}
+  }
+});
+
+
+/* ---- ตกแต่งเพิ่มเติมให้สวยขึ้น ---- */
+(function(){
+  var d=document.createElement('div');d.id='bgdeco';
+  var pos=[['circle',4,12,72],['triangle',88,8,80],['cube',5,60,78],['cylinder',90,52,72],['cone',48,3,62],['sphere',42,86,72],['prism',78,84,72],['ellipse',14,88,72],['square',70,30,52],['rectangle',24,34,62]];
+  d.innerHTML=pos.map(function(p,i){return '<div class="d" style="left:'+p[1]+'%;top:'+p[2]+'%;width:'+p[3]+'px;height:'+p[3]+'px;animation-delay:-'+(i*0.7).toFixed(1)+'s">'+miniSVG(p[0],null,{shadow:false})+'</div>';}).join('');
+  document.body.insertBefore(d,document.body.firstChild);
+
+  $('mascot').innerHTML=`<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="mb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd6ff"/><stop offset="1" stop-color="#3f86e8"/></linearGradient>
+<radialGradient id="hd2" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#fff0dc"/><stop offset="1" stop-color="#ffcb97"/></radialGradient>
+<linearGradient id="ht2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#e8962a"/></linearGradient>
+</defs>
+<ellipse cx="100" cy="243" rx="62" ry="7" fill="#2b2a5c" opacity=".18"/>
+<rect x="44" y="144" width="112" height="62" rx="26" fill="#c98a52" stroke="#7a4a22" stroke-width="3"/>
+<rect x="72" y="198" width="22" height="34" rx="10" fill="#6a4bd8"/><rect x="106" y="198" width="22" height="34" rx="10" fill="#6a4bd8"/>
+<ellipse cx="82" cy="234" rx="19" ry="10" fill="#ff5a5f" stroke="#a82b30" stroke-width="3"/><ellipse cx="118" cy="234" rx="19" ry="10" fill="#ff5a5f" stroke="#a82b30" stroke-width="3"/>
+<rect x="54" y="146" width="92" height="62" rx="26" fill="url(#mb2)" stroke="#2a63b8" stroke-width="3"/>
+<ellipse cx="78" cy="160" rx="16" ry="6" fill="#fff" opacity=".35"/>
+<path d="M100,162 L104.5,172.5 L116,173.5 L107.2,181 L110,192 L100,186 L90,192 L92.8,181 L84,173.5 L95.5,172.5 Z" fill="#ffd93d" stroke="#c78f00" stroke-width="2" stroke-linejoin="round"/>
+<ellipse cx="50" cy="170" rx="13" ry="22" fill="#8fd6ff" stroke="#2a63b8" stroke-width="3" transform="rotate(20 50 170)"/>
+<g class="wave"><ellipse cx="150" cy="168" rx="13" ry="22" fill="#8fd6ff" stroke="#2a63b8" stroke-width="3" transform="rotate(-25 150 168)"/>
+<circle cx="168" cy="146" r="15" fill="#d8f3ff" fill-opacity=".8" stroke="#8a55f5" stroke-width="5"/><ellipse cx="163" cy="141" rx="5" ry="3" fill="#fff" transform="rotate(-35 163 141)"/><line x1="179" y1="157" x2="191" y2="171" stroke="#8a55f5" stroke-width="6" stroke-linecap="round"/></g>
+<circle cx="52" cy="100" r="10" fill="#ffcb97" stroke="#e0a574" stroke-width="3"/><circle cx="148" cy="100" r="10" fill="#ffcb97" stroke="#e0a574" stroke-width="3"/>
+<circle cx="100" cy="98" r="50" fill="url(#hd2)" stroke="#e0a574" stroke-width="3"/>
+<ellipse cx="100" cy="66" rx="72" ry="14" fill="#d99a2b" stroke="#9a6410" stroke-width="3"/>
+<path d="M52,66 Q54,22 100,20 Q146,22 148,66 Z" fill="url(#ht2)" stroke="#9a6410" stroke-width="3"/>
+<path d="M66,50 Q72,32 92,28" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round"/>
+<rect x="54" y="52" width="92" height="10" fill="#ff5a5f"/><circle cx="100" cy="57" r="6" fill="#ffd93d" stroke="#c78f00" stroke-width="2"/>
+<path d="M66,88 Q76,82 88,87" fill="none" stroke="#7a4a22" stroke-width="3" stroke-linecap="round"/><path d="M112,87 Q124,82 134,88" fill="none" stroke="#7a4a22" stroke-width="3" stroke-linecap="round"/>
+<ellipse cx="78" cy="104" rx="10" ry="12" fill="#2b2a5c"/><ellipse cx="122" cy="104" rx="10" ry="12" fill="#2b2a5c"/>
+<circle cx="82" cy="99" r="4" fill="#fff"/><circle cx="126" cy="99" r="4" fill="#fff"/><circle cx="75" cy="109" r="2" fill="#fff"/><circle cx="119" cy="109" r="2" fill="#fff"/>
+<ellipse cx="66" cy="124" rx="10" ry="6" fill="#ff8fb0" opacity=".7"/><ellipse cx="134" cy="124" rx="10" ry="6" fill="#ff8fb0" opacity=".7"/>
+<path d="M82,122 Q100,148 118,122 Z" fill="#8a1f3d" stroke="#b5472f" stroke-width="3" stroke-linejoin="round"/><ellipse cx="100" cy="134" rx="9" ry="5" fill="#ff7a9a"/>
+</svg>`;
+
+  $('sky').insertAdjacentHTML('afterbegin','<div class="hill2"></div><div class="sun"><svg viewBox="0 0 200 200"><defs><radialGradient id="sunG" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fff9b0"/><stop offset="1" stop-color="#ffc21a"/></radialGradient></defs><g class="rays">'
+    +[0,1,2,3,4,5,6,7,8,9,10,11].map(function(i){return '<rect x="94" y="4" width="12" height="30" rx="6" fill="#ffd93d" transform="rotate('+(i*30)+' 100 100)"/>';}).join('')
+    +'</g><circle cx="100" cy="100" r="52" fill="url(#sunG)" stroke="#ffb100" stroke-width="4"/><ellipse cx="82" cy="94" rx="5" ry="7" fill="#2b2a5c"/><ellipse cx="118" cy="94" rx="5" ry="7" fill="#2b2a5c"/><ellipse cx="70" cy="110" rx="9" ry="5" fill="#ff9bb5" opacity=".7"/><ellipse cx="130" cy="110" rx="9" ry="5" fill="#ff9bb5" opacity=".7"/><path d="M84,112 Q100,130 116,112" fill="none" stroke="#b5472f" stroke-width="4" stroke-linecap="round"/></svg></div>');
+
+  function pine(){return '<svg viewBox="0 0 120 150"><g transform="translate(38 107) scale(.22)">'+shapeInner('cylinder','#b9784a')+'</g><g transform="translate(0 6) scale(.6)">'+shapeInner('cone','#2fc56f')+'</g></svg>';}
+  function ball(c){return '<svg viewBox="0 0 120 150"><g transform="translate(38 107) scale(.22)">'+shapeInner('cylinder','#b9784a')+'</g><g transform="translate(10 5) scale(.5)">'+shapeInner('sphere',c)+'</g></svg>';}
+  var tr=[[2,60,80,pine()],[13,22,64,ball('#ff7ac6')],[84,40,70,ball('#ffd93d')],[93,66,84,pine()],[22,70,58,pine()],[74,18,56,ball('#3ddc84')]];
+  var tdiv=document.createElement('div');tdiv.className='trees';
+  tdiv.innerHTML=tr.map(function(t){return '<div class="t" style="left:'+t[0]+'%;bottom:'+t[1]+'px;width:'+t[2]+'px">'+t[3]+'</div>';}).join('');
+  $('scr-home').insertBefore(tdiv,document.querySelector('#scr-home .hero'));
+})();
+
+refreshChips();
+})();
+</script>
+</body>
+</html>
